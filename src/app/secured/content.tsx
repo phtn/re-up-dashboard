@@ -14,8 +14,13 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { UpcomingEvents } from "./components";
+import type { ReactNode } from "react";
 
-export const Content = () => {
+interface ContentProps {
+  children: ReactNode;
+}
+export const Content = ({ children }: ContentProps) => {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -40,13 +45,18 @@ export const Content = () => {
           </div>
         </header>
         <main className="flex">
-          <section className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-              <div className="aspect-video rounded-xl bg-muted/50" />
-              <div className="aspect-video rounded-xl bg-muted/50" />
-              <div className="aspect-video rounded-xl bg-muted/50" />
+          <section className="h-full flex flex-1 flex-col gap-4 pt-0 px-4">
+            <div className="grid auto-rows-min h-full gap-4 md:grid-cols-3">
+              <div className="aspect-square h-full rounded-xl bg-muted/50" />
+              <div className="aspect-square rounded-xl bg-muted/50" />
+              <div className="aspect-square rounded-xl bg-muted/50 h-full overflow-hidden">
+                {children}
+              </div>
             </div>
-            <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+            <div className="min-h-[100vh] flex justify-between p-4 bg-muted/50 w-full md:min-h-min">
+              <UpcomingEvents />
+              {children}
+            </div>
           </section>
           <div>
             <CreateProject />

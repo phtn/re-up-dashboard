@@ -19,8 +19,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { SidebarCtx } from "@/app/ctx/sidebar";
+import { HyperList } from "../ui/list";
 
-interface Project {
+export interface Project {
+  id: number;
   name: string;
   logo: ElementType;
   plan: string;
@@ -41,6 +43,23 @@ export function Switcher({ projects }: SwitcherProps) {
   );
 
   const { toggle } = use(SidebarCtx)!;
+
+  const ProjectItem = useCallback(
+    (project: Project) => (
+      <DropdownMenuItem
+        onClick={handleSelect(project)}
+        key={project.name}
+        className="gap-2 p-2"
+      >
+        <div className="flex size-6 items-center justify-center rounded-sm border">
+          <project.logo className="size-4 shrink-0" />
+        </div>
+        {project.name}
+        <DropdownMenuShortcut>⌘{project.id}</DropdownMenuShortcut>
+      </DropdownMenuItem>
+    ),
+    [handleSelect],
+  );
 
   return (
     <SidebarMenu>
@@ -72,7 +91,9 @@ export function Switcher({ projects }: SwitcherProps) {
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               Projects
             </DropdownMenuLabel>
-            {projects.map((project, index) => (
+
+            <HyperList data={projects} component={ProjectItem} keyId="id" />
+            {/* {projects.map((project, index) => (
               <DropdownMenuItem
                 key={project.name}
                 onClick={handleSelect(project)}
@@ -84,7 +105,7 @@ export function Switcher({ projects }: SwitcherProps) {
                 {project.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
-            ))}
+            ))} */}
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={toggle}

@@ -7,6 +7,7 @@ import {
   Command,
   Frame,
   GalleryVerticalEnd,
+  LucideIcon,
   Map,
   PieChart,
   Settings2,
@@ -16,7 +17,7 @@ import {
 import { NavMain } from "@/components/app/nav-main";
 import { NavProjects } from "@/components/app/nav-projects";
 import { NavUser } from "@/components/app/nav-user";
-import { Switcher } from "@/components/app/nav-switcher";
+import { Project, Switcher } from "@/components/app/nav-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -26,7 +27,58 @@ import {
 } from "@/components/ui/sidebar";
 import type { ComponentProps } from "react";
 
-const data = {
+type UserData = {
+  name: "xpriori";
+  email: "in-command";
+  avatar: "/re-up-icon_v2.svg";
+};
+
+type ContentItem = {
+  id: number;
+  title: string;
+  url: string;
+};
+
+type SubContent = {
+  id: number;
+  name: string;
+  icon: LucideIcon;
+  url: string;
+};
+
+interface NavMainItem {
+  title: string; //"Playground"
+  url: string; //"#"
+  icon: LucideIcon; //SquareTerminal
+  isActive: boolean; //true
+  items: ContentItem[];
+}
+
+/*
+      [
+                {
+                  title: "History",
+                  url: "#",
+                },
+                {
+                  title: "Starred",
+                  url: "#",
+                },
+                {
+                  title: "Settings",
+                  url: "#",
+                },
+              ]
+      */
+
+interface SidebarData {
+  user: UserData;
+  projects: Project[];
+  navMain: NavMainItem[];
+  sub: SubContent[];
+}
+
+const data: SidebarData = {
   user: {
     name: "xpriori",
     email: "in-command",
@@ -34,17 +86,20 @@ const data = {
   },
   projects: [
     {
-      name: "Acme Inc",
+      id: 0,
+      name: "re-up.ph",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
     {
-      name: "Acme Corp.",
+      id: 1,
+      name: "FastInsure Tech",
       logo: AudioWaveform,
       plan: "Startup",
     },
     {
-      name: "Evil Corp.",
+      id: 2,
+      name: "BiTicket",
       logo: Command,
       plan: "Free",
     },
@@ -57,20 +112,24 @@ const data = {
       isActive: true,
       items: [
         {
+          id: 0,
           title: "History",
           url: "#",
         },
         {
+          id: 1,
           title: "Starred",
           url: "#",
         },
         {
+          id: 2,
           title: "Settings",
           url: "#",
         },
       ],
     },
     {
+      isActive: true,
       title: "Models",
       url: "#",
       icon: Bot,
@@ -78,58 +137,71 @@ const data = {
         {
           title: "Genesis",
           url: "#",
+          id: 0,
         },
         {
           title: "Explorer",
           url: "#",
+          id: 1,
         },
         {
           title: "Quantum",
           url: "#",
+          id: 2,
         },
       ],
     },
     {
+      isActive: true,
       title: "Documentation",
       url: "#",
       icon: BookOpen,
       items: [
         {
+          id: 0,
           title: "Introduction",
           url: "#",
         },
         {
+          id: 1,
           title: "Get Started",
           url: "#",
         },
         {
+          id: 2,
           title: "Tutorials",
           url: "#",
         },
         {
+          id: 3,
           title: "Changelog",
           url: "#",
         },
       ],
     },
     {
+      isActive: false,
       title: "Settings",
       url: "#",
       icon: Settings2,
       items: [
         {
+          id: 0,
           title: "General",
           url: "#",
         },
         {
+          id: 1,
           title: "Team",
           url: "#",
         },
         {
+          id: 2,
           title: "Billing",
           url: "#",
         },
         {
+          id: 3,
           title: "Limits",
           url: "#",
         },
@@ -138,16 +210,19 @@ const data = {
   ],
   sub: [
     {
+      id: 0,
       name: "Design Engineering",
       url: "#",
       icon: Frame,
     },
     {
+      id: 1,
       name: "Sales & Marketing",
       url: "#",
       icon: PieChart,
     },
     {
+      id: 2,
       name: "Travel",
       url: "#",
       icon: Map,
