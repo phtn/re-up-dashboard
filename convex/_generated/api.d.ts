@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as commanders_d from "../commanders/d.js";
+import type * as customers_d from "../customers/d.js";
 import type * as projects_create from "../projects/create.js";
 import type * as projects_d from "../projects/d.js";
 import type * as projects_get from "../projects/get.js";
@@ -28,6 +29,7 @@ import type * as projects_get from "../projects/get.js";
  */
 declare const fullApi: ApiFromModules<{
   "commanders/d": typeof commanders_d;
+  "customers/d": typeof customers_d;
   "projects/create": typeof projects_create;
   "projects/d": typeof projects_d;
   "projects/get": typeof projects_get;

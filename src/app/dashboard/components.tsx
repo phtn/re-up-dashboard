@@ -1,5 +1,34 @@
+"use client";
+
 import { Card } from "@/components/ui/card";
 import { Calendar } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from "@/components/ui/breadcrumb";
+import { usePathname } from "next/navigation";
+
+export const Header = () => {
+  const pathname = usePathname();
+  const nav = pathname.split("/")[2];
+  return (
+    <header className="flex h-16 shrink-0 items-center py-1.5 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+      <div className="flex items-center px-4">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem className="hidden md:block">
+              <BreadcrumbLink href="#" className="font-bold capitalize text-xl">
+                {nav ?? `sales`}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+    </header>
+  );
+};
 
 interface TestDay {
   date: number;

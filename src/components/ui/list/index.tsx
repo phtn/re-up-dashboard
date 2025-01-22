@@ -1,7 +1,7 @@
 import { type ClassName } from "@/app/types";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
-import { type FC, memo, useCallback, useMemo } from "react";
+import { type FC, memo, type ReactNode, useCallback, useMemo } from "react";
 
 interface HyperListProps<T> {
   keyId?: keyof T;
@@ -12,6 +12,8 @@ interface HyperListProps<T> {
   reversed?: boolean;
   orderBy?: keyof T;
   max?: number;
+  children?: ReactNode;
+  delay?: number;
 }
 export const ListComponent = <T extends object>(props: HyperListProps<T>) => {
   const {
@@ -20,9 +22,11 @@ export const ListComponent = <T extends object>(props: HyperListProps<T>) => {
     container,
     itemStyle,
     max = 15,
+    delay = 0,
     component: Item,
     reversed = false,
     orderBy = "updated_at",
+    children,
   } = props;
 
   const baseContainerStyle = useMemo(
@@ -32,7 +36,7 @@ export const ListComponent = <T extends object>(props: HyperListProps<T>) => {
 
   const baseItemStyle = useMemo(() => cn("group/list", itemStyle), [itemStyle]);
 
-  const transition = (i: number) => ({ delay: i * 0.05 });
+  // const transition = (i: number) => ({ delay: i * 0.05 });
 
   const slicedData = useMemo(
     () => (reversed ? data?.slice(0, max).reverse() : data?.slice(0, max)),
@@ -47,14 +51,14 @@ export const ListComponent = <T extends object>(props: HyperListProps<T>) => {
           key={key}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={transition(j)}
+          transition={{ delay: (j + 1) * 0.05 + delay }}
           className={baseItemStyle}
         >
           <Item {...i} />
         </motion.li>
       );
     },
-    [Item, baseItemStyle, keyId],
+    [Item, baseItemStyle, keyId, delay],
   );
 
   const sortFn = useCallback(
@@ -69,6 +73,7 @@ export const ListComponent = <T extends object>(props: HyperListProps<T>) => {
 
   return (
     <AnimatePresence>
+      {children}
       <ul className={baseContainerStyle}>
         {slicedData?.sort(sortFn).map(render)}
       </ul>

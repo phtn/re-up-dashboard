@@ -48,7 +48,10 @@ export const CreateProject = () => {
 
   return (
     <SidebarProvider open={open} onOpenChange={toggle} defaultOpen={false}>
-      <Sidebar side="right" className={cn({ "bg-background w-1/4": open })}>
+      <Sidebar
+        side="right"
+        className={cn({ "absolute right-0 bg-background w-1/4": open })}
+      >
         <SidebarHeader>
           <h2 className="p-2 font-semibold text-sm tracking-tight flex gap-2 items-center">
             <SparklesIcon className="size-4 stroke-1 fill-background text-muted-foreground" />

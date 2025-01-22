@@ -53,7 +53,7 @@ export const AuthCtxProvider = ({ children }: { children: ReactNode }) => {
       if (!u) {
         return router.push("/");
       }
-      router.push("/secured");
+      // router.push("/dashboard");
     });
     return () => unsub();
   }, [router]);

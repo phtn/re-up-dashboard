@@ -16,7 +16,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -59,7 +58,7 @@ export function NavUser({ user }: NavUserProps) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="size-7 rounded-none">
+              <Avatar className="size-8 rounded-none">
                 <AvatarImage
                   className="invert dark:invert-0"
                   src={user.avatar}
@@ -75,33 +74,26 @@ export function NavUser({ user }: NavUserProps) {
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-none"
-            side={isMobile ? "bottom" : "right"}
+            className="w-[--radix-dropdown-menu-trigger-width] mb-4 min-w-56 rounded-lg text-white bg-void"
+            side={isMobile ? "bottom" : "top"}
             align="end"
-            sideOffset={8}
-            alignOffset={48}
+            sideOffset={0}
+            alignOffset={0}
           >
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 p-3 text-left text-sm">
+              <div className="flex items-center gap-2 p-3 bg-steel/20 text-left text-sm">
                 <div className="flex items-center w-full text-sm leading-none justify-between">
-                  <span className="truncate font-semibold">Settings</span>
+                  <span className="truncate font-semibold">Toggle Modes</span>
                   <Settings2 className="size-4" />
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem className="justify-between">
-                <p>Status</p>
-                <p>Secured</p>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuGroup></DropdownMenuGroup>
             {modes.map((mode) => (
               <DropdownMenuItem
                 key={mode.id}
-                className={cn("justify-between capitalize", {
-                  "bg-muted": mode.mode === theme,
+                className={cn("justify-between capitalize hover:bg-steel/30", {
+                  "bg-steel/20": mode.mode === theme,
                 })}
                 onClick={setMode(mode.mode)}
               >

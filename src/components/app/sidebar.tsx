@@ -1,21 +1,7 @@
 "use client";
 
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  LucideIcon,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
-
 import { NavMain } from "@/components/app/nav-main";
-import { NavProjects } from "@/components/app/nav-projects";
+import { NavSub } from "@/components/app/nav-sub";
 import { NavUser } from "@/components/app/nav-user";
 import { Project, Switcher } from "@/components/app/nav-switcher";
 import {
@@ -23,9 +9,21 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarProvider,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import type { ComponentProps } from "react";
+import { type ComponentProps } from "react";
+import { Icon, type IconName } from "../ui/icons";
+import { cn } from "@/lib/utils";
+import { HyperList } from "../ui/list";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 type UserData = {
   name: "xpriori";
@@ -39,37 +37,20 @@ type ContentItem = {
   url: string;
 };
 
-type SubContent = {
+export type SubContent = {
   id: number;
   name: string;
-  icon: LucideIcon;
+  icon: IconName;
   url: string;
 };
 
-interface NavMainItem {
-  title: string; //"Playground"
-  url: string; //"#"
-  icon: LucideIcon; //SquareTerminal
-  isActive: boolean; //true
-  items: ContentItem[];
+export interface NavMainItem {
+  id?: string;
+  title?: string; //"Playground"
+  href?: string; //"#"
+  icon: IconName;
+  items?: ContentItem[];
 }
-
-/*
-      [
-                {
-                  title: "History",
-                  url: "#",
-                },
-                {
-                  title: "Starred",
-                  url: "#",
-                },
-                {
-                  title: "Settings",
-                  url: "#",
-                },
-              ]
-      */
 
 interface SidebarData {
   user: UserData;
@@ -87,163 +68,155 @@ const data: SidebarData = {
   projects: [
     {
       id: 0,
-      name: "re-up.ph",
-      logo: GalleryVerticalEnd,
+      name: "x.com",
+      logo: "XLogomark",
       plan: "Enterprise",
     },
     {
       id: 1,
-      name: "FastInsure Tech",
-      logo: AudioWaveform,
+      name: "apple.com",
+      logo: "Apple",
       plan: "Startup",
     },
     {
       id: 2,
-      name: "BiTicket",
-      logo: Command,
+      name: "tesla.com",
+      logo: "Tesla",
       plan: "Free",
     },
   ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          id: 0,
-          title: "History",
-          url: "#",
-        },
-        {
-          id: 1,
-          title: "Starred",
-          url: "#",
-        },
-        {
-          id: 2,
-          title: "Settings",
-          url: "#",
-        },
-      ],
+      id: "sales_0",
+      title: "Sales",
+      icon: "DollarCircle",
     },
     {
-      isActive: true,
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-          id: 0,
-        },
-        {
-          title: "Explorer",
-          url: "#",
-          id: 1,
-        },
-        {
-          title: "Quantum",
-          url: "#",
-          id: 2,
-        },
-      ],
+      id: "inventory_0",
+      title: "Inventory",
+      href: "inventory",
+      icon: "ListSquare",
     },
     {
-      isActive: true,
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          id: 0,
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          id: 1,
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          id: 2,
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          id: 3,
-          title: "Changelog",
-          url: "#",
-        },
-      ],
+      id: "orders_0",
+      title: "Orders",
+      href: "orders",
+      icon: "ArrowEnter",
     },
     {
-      isActive: false,
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          id: 0,
-          title: "General",
-          url: "#",
-        },
-        {
-          id: 1,
-          title: "Team",
-          url: "#",
-        },
-        {
-          id: 2,
-          title: "Billing",
-          url: "#",
-        },
-        {
-          id: 3,
-          title: "Limits",
-          url: "#",
-        },
-      ],
+      id: "fulfillment_0",
+      title: "Fulfillment",
+      href: "fulfillment",
+      icon: "Box",
+    },
+    {
+      id: "delivery_0",
+      title: "Delivery",
+      href: "delivery",
+      icon: "ArrowForward",
     },
   ],
+
   sub: [
     {
       id: 0,
       name: "Design Engineering",
       url: "#",
-      icon: Frame,
+      icon: "XLogomark",
     },
     {
       id: 1,
       name: "Sales & Marketing",
       url: "#",
-      icon: PieChart,
+      icon: "XLogomark",
     },
     {
       id: 2,
       name: "Travel",
       url: "#",
-      icon: Map,
+      icon: "XLogomark",
     },
   ],
 };
 
+export const NewSidebar = () => (
+  <div className="flex flex-col items-center h-full space-y-8 pl-4 py-4 w-[5rem] border-0 border-avocado-300">
+    <Switcher projects={data.projects} />
+
+    <TooltipProvider delayDuration={0}>
+      <HyperList
+        data={data.navMain}
+        component={SideBoob}
+        container="space-y-10 w-full flex flex-col pt-2 h-[calc(86vh)] items-center"
+        delay={0.36}
+      />
+    </TooltipProvider>
+  </div>
+);
+
+interface SideBoobProps extends NavMainItem {
+  icon: IconName;
+}
+const SideBoob = ({ icon, title, href, ...props }: SideBoobProps) => {
+  const pathname = usePathname();
+  const nav = pathname.split("/")[2];
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Link
+          {...props}
+          href={`/dashboard/${href ?? ""}`}
+          className={cn(
+            "outline-0 group/boob rounded-xl",
+            "cursor-pointer flex items-center justify-center transition-all relative duration-300 ease-fluid active:scale-90 active:opacity-80",
+          )}
+        >
+          <Icon
+            name="Squircle"
+            className={cn(
+              "absolute pointer-events-none group-hover/boob:text-slate-200 size-10 text-white z-0",
+              {
+                "text-slate-900 group-hover/boob:text-slate-900": nav === href,
+              },
+            )}
+          />
+          <Icon
+            name={icon}
+            className={cn("size-6 relative z-[1]", {
+              "text-white": nav === href,
+            })}
+          />
+        </Link>
+      </TooltipTrigger>
+
+      <TooltipContent
+        side="right"
+        align="center"
+        sideOffset={12}
+        className="relative duration-300 z-[100] bg-gray-800 text-white"
+      >
+        {title}
+      </TooltipContent>
+    </Tooltip>
+  );
+};
+
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <Switcher projects={data.projects} />
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.sub} />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+    <SidebarProvider>
+      <Sidebar collapsible="icon" {...props}>
+        <SidebarHeader>
+          <Switcher projects={data.projects} />
+        </SidebarHeader>
+        <SidebarContent>
+          <NavMain items={data.navMain} />
+          <NavSub items={data.sub} />
+        </SidebarContent>
+        <SidebarFooter>
+          <NavUser user={data.user} />
+        </SidebarFooter>
+        <SidebarRail />
+      </Sidebar>
+    </SidebarProvider>
   );
 }
