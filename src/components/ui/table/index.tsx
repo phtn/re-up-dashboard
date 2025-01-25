@@ -199,7 +199,7 @@ export default function SampleTable() {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-32 text-center">
+              <TableCell className="h-32 text-center">
                 {pending ? `Loading...` : `No results.`}
               </TableCell>
             </TableRow>

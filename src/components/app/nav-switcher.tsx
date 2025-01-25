@@ -58,10 +58,7 @@ export function Switcher({ projects }: SwitcherProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="flex justify-center">
-        <Button
-          size={"icon"}
-          className="bg-slate-200 dark:bg-transparent border dark:border-gray-700"
-        >
+        <Button size={"icon"} className="bg-slate-200 dark:bg-transparent">
           <Icon name={activeProject.logo} className="text-foreground size-6" />
         </Button>
       </DropdownMenuTrigger>

@@ -2,7 +2,6 @@ import { CreateProject } from "@/components/app/create-project";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
 import type { ReactNode } from "react";
@@ -23,9 +22,7 @@ export const Content = ({ children }: ContentProps) => {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#" className="font-bold text-xl">
-                    Sales
-                  </BreadcrumbLink>
+                  Sales
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>

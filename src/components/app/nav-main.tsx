@@ -8,9 +8,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Icon } from "../ui/icons";
-import { NavMainItem } from "./sidebar";
+import { NavItem } from "./sidebar";
 
-export function NavMain({ items }: { items: NavMainItem[] }) {
+export function NavMain({ items }: { items: NavItem[] }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>

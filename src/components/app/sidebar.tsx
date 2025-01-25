@@ -126,20 +126,20 @@ const data: SidebarData = {
     {
       id: "promos_1",
       title: "Sales & Marketing",
-      href: "#",
-      icon: "XLogomark",
+      href: "customers",
+      icon: "ArrowUpDown",
     },
     {
       id: "settings_2",
       title: "Travel",
-      href: "#",
-      icon: "XLogomark",
+      href: "customers",
+      icon: "Settings",
     },
     {
-      id: "team_2",
+      id: "team_3",
       title: "Travel",
-      href: "#",
-      icon: "XLogomark",
+      href: "customers",
+      icon: "Dashbox",
     },
   ],
 };
