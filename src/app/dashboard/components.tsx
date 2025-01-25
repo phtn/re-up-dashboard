@@ -1,7 +1,5 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { Calendar } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,70 +7,68 @@ import {
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icons";
+import type { ReactNode } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { NavUser } from "@/components/app/nav-user";
+import { cn } from "@/lib/utils";
 
-export const Header = () => {
+export const Header = ({ children }: { children?: ReactNode }) => {
   const pathname = usePathname();
   const nav = pathname.split("/")[2];
+  const isMobile = useIsMobile();
   return (
     <header className="flex h-16 shrink-0 items-center py-1.5 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-      <div className="flex items-center px-4">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem className="hidden md:block">
-              <BreadcrumbLink href="#" className="font-bold capitalize text-xl">
-                {nav ?? `sales`}
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+      <div className="flex w-full items-end justify-between md:px-4 px-2">
+        <section className="flex gap-0 items-center">
+          {children}
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink
+                  href="#"
+                  className="font-bold capitalize text-lg md:text-xl"
+                >
+                  {nav ?? `sales`}
+                </BreadcrumbLink>
+                <Button
+                  className="hover:bg-gray-200 rounded-full size-7"
+                  size={"icon"}
+                >
+                  <Icon name="PlusCircle" />
+                </Button>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </section>
+        {isMobile ? (
+          <NavUser />
+        ) : (
+          <Button
+            size={"sm"}
+            variant={"outline"}
+            className="bg-gray-900 text-white active:scale-95 transition-all duration-300"
+          >
+            <Icon name="PlusCircle" />
+            Simulate Sale
+          </Button>
+        )}
       </div>
     </header>
   );
 };
 
-interface TestDay {
-  date: number;
-  day: string;
-  subject?: string;
-  isActive?: boolean;
-}
-
-export function UpcomingEvents() {
-  const tests: TestDay[] = [
-    { date: 22, day: "Monday" },
-    { date: 23, day: "Tuesday", subject: "Math", isActive: true },
-    { date: 24, day: "Wednesday", subject: "Art", isActive: true },
-    { date: 25, day: "Thursday" },
-    { date: 26, day: "Friday" },
-  ];
-
+export const ActionButton = () => {
   return (
-    <div className="px-4">
-      <div className="flex items-center p-6 gap-3 mb-6">
-        <h2 className="text-[28px] font-normal">Upcoming Tests</h2>
-        <div className="flex items-center gap-1.5 text-sm text-gray-600">
-          <Calendar className="size-[18px]" />
-          <span>Test Day</span>
-        </div>
-      </div>
-      <div className="flex gap-3">
-        {tests.map((test) => (
-          <Card
-            key={test.date}
-            className={`flex size-[110px] flex-col items-center justify-center p-2 rounded-2xl border-0 ${
-              test.isActive ? "bg-[#18181B] text-white" : "bg-[#F8F8F8]"
-            }`}
-          >
-            <span className="text-[42px] font-normal leading-tight">
-              {test.date}
-            </span>
-            <span className="text-sm mt-0.5">{test.day}</span>
-            {test.subject && (
-              <span className="mt-1 text-sm">{test.subject}</span>
-            )}
-          </Card>
-        ))}
-      </div>
-    </div>
+    <button
+      className={cn(
+        "size-12 flex items-center justify-center fixed right-8 bottom-8 z-50 rounded-full",
+        "text-sm bg-amber-300 cursor-pointer",
+        "active:scale-95 transition-all duration-300",
+      )}
+    >
+      ƒ(x)
+    </button>
   );
-}
+};

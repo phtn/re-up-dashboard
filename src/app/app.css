@@ -1,5 +1,27 @@
 @import "tailwindcss";
 
+.pentagon {
+  width: 120px;
+  aspect-ratio: 1.25;
+  --o: calc(50% * tan(-40deg));
+  clip-path: polygon(
+    var(--o) 5%,
+    5% var(--o),
+    calc(100% - var(--o)) 5%,
+    5% calc(100% - var(--o))
+  );
+}
+.pentagon-inner {
+  width: 118px;
+  aspect-ratio: 1.255;
+  --o: calc(50% * tan(-40deg));
+  clip-path: polygon(
+    var(--o) 5%,
+    5% var(--o),
+    calc(100% - var(--o)) 5%,
+    5% calc(100% - var(--o))
+  );
+}
 .hexagon {
   height: 200px;
   aspect-ratio: 1 / cos(30deg);

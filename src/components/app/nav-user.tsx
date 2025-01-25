@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ChevronsUpDown,
   LaptopIcon,
   LucideIceCreamCone,
   MoonIcon,
@@ -9,7 +8,6 @@ import {
   SunIcon,
 } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,28 +16,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
 import { useTheme } from "next-themes";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { Mode } from "@/app/types";
 import { setThemeState } from "@/app/actions";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import { Icon } from "../ui/icons";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { HyperList } from "../ui/list";
 
-interface NavUserProps {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}
-export function NavUser({ user }: NavUserProps) {
-  const { isMobile } = useSidebar();
+export function NavUser() {
   const { setTheme, theme } = useTheme();
+  const isMobile = useIsMobile();
 
   const setMode = useCallback(
     (mode: Mode) => async () => {
@@ -49,84 +38,88 @@ export function NavUser({ user }: NavUserProps) {
     [setTheme],
   );
 
+  const modes: Modes[] = useMemo(
+    () => [
+      {
+        id: 0,
+        mode: "light",
+        icon: SunIcon,
+        fn: setMode("light"),
+        isActive: theme === "light",
+      },
+      {
+        id: 1,
+        mode: "dark",
+        icon: MoonIcon,
+        fn: setMode("dark"),
+        isActive: theme === "dark",
+      },
+      {
+        id: 2,
+        mode: "system",
+        icon: LaptopIcon,
+        fn: setMode("system"),
+        isActive: theme === "system",
+      },
+    ],
+    [setMode, theme],
+  );
+
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <Avatar className="size-8 rounded-none">
-                <AvatarImage
-                  className="invert dark:invert-0"
-                  src={user.avatar}
-                  alt={user.name}
-                />
-                <AvatarFallback className="rounded-lg">XX</AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-none">
-                <span className="truncate font-bold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
-              </div>
-              <ChevronsUpDown className="ml-auto size-4" />
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] mb-4 min-w-56 rounded-lg text-white bg-void"
-            side={isMobile ? "bottom" : "top"}
-            align="end"
-            sideOffset={0}
-            alignOffset={0}
-          >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 p-3 bg-steel/20 text-left text-sm">
-                <div className="flex items-center w-full text-sm leading-none justify-between">
-                  <span className="truncate font-semibold">Toggle Modes</span>
-                  <Settings2 className="size-4" />
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuGroup></DropdownMenuGroup>
-            {modes.map((mode) => (
-              <DropdownMenuItem
-                key={mode.id}
-                className={cn("justify-between capitalize hover:bg-steel/30", {
-                  "bg-steel/20": mode.mode === theme,
-                })}
-                onClick={setMode(mode.mode)}
-              >
-                <mode.icon />
-                {mode.mode}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size={"icon"} className="bg-slate-200 dark:bg-transparent">
+          <Icon name="Settings" className="text-foreground" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-[--radix-dropdown-menu-trigger-width] mb-4 min-w-56 rounded-lg text-gray-950 dark:bg-gray-300 bg-gray-300"
+        side={isMobile ? "bottom" : "top"}
+        align="end"
+        sideOffset={0}
+        alignOffset={0}
+      >
+        <DropdownMenuLabel className="p-0 border-b border-gray-500 font-normal">
+          <div className="flex items-center gap-2 p-3 bg-steel/20 text-left text-sm">
+            <div className="flex items-start w-full h-fit p-0.5 text-sm leading-none justify-between">
+              <span className="truncate font-semibold">Modes</span>
+              <Settings2 className="size-4" />
+            </div>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <HyperList
+            data={modes}
+            component={ModeItem}
+            keyId="id"
+            container="p-2"
+          />
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
+
+const ModeItem = (mode: Modes) => (
+  <DropdownMenuItem
+    key={mode.id}
+    className={cn(
+      "justify-between capitalize rounded-md hover:bg-gray-400/60",
+      {
+        "bg-gray-400/40": mode.isActive,
+      },
+    )}
+    onClick={mode.fn}
+  >
+    <mode.icon />
+    {mode.mode}
+  </DropdownMenuItem>
+);
 
 interface Modes {
   id: number;
   mode: Mode;
   icon: typeof LucideIceCreamCone;
+  fn: VoidFunction;
+  isActive: boolean;
 }
-const modes: Modes[] = [
-  {
-    id: 0,
-    mode: "light",
-    icon: SunIcon,
-  },
-  {
-    id: 1,
-    mode: "dark",
-    icon: MoonIcon,
-  },
-  {
-    id: 2,
-    mode: "system",
-    icon: LaptopIcon,
-  },
-];

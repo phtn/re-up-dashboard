@@ -15,6 +15,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { Button } from "../ui/button";
+import { Icon } from "../ui/icons";
 
 const data = [
   {
@@ -62,21 +64,45 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+const CTitle = (props: { title: string }) => (
+  <CardTitle className="md:font-semibold capitalize text-lg md:text-[16px] tracking-tight text-gray-600">
+    {props.title}
+  </CardTitle>
+);
+
+const CValue = (props: { value: string | number }) => (
+  <div className="text-3xl font-sans font-light">{props.value}</div>
+);
+
+const CScope = (props: { scope: string }) => (
+  <div className="flex items-end gap-1 rounded-md bg-gray-400/10 p-1.5">
+    <p className="text-xs capitalize md:font-normal">{props.scope}</p>
+    <Button variant={"ghost"} className="size-4 p-0">
+      <Icon
+        name="ChevRight"
+        className="dark:text-gray-500 rotate-90 shrink-0"
+      />
+    </Button>
+  </div>
+);
+
+const CTrend = (props: { trend: string }) => (
+  <p className="text-xs font-light md:font-normal dark:text-gray-400">
+    {props.trend}
+  </p>
+);
+
 export function CardStat() {
   return (
-    <Card className="space-y-3">
+    <Card className="space-y-3 w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="font-semibold tracking-tighter">
-          Total Revenue
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">+20.1% from last month</p>
+        <CTitle title="total revenue" />
+        <CScope scope="today" />
       </CardHeader>
 
-      <CardContent className="pb-0 space-y-10">
-        <div className="text-3xl font-sans font-light text-gray-600">
-          $15,231.89
-        </div>
-        <ChartContainer config={chartConfig} className="h-[60px] w-full">
+      <CardContent className="pb-0 space-y-4 md:space-y-10">
+        <CValue value={"$15,231.89"} />
+        <ChartContainer config={chartConfig} className="md:h-[60px] w-full">
           <LineChart
             data={data}
             margin={{
@@ -105,19 +131,14 @@ export function CardStat() {
 export const BChart = () => (
   <Card className="space-y-3">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="font-semibold tracking-tighter">
-        Subscriptions
-      </CardTitle>
-
-      <p className="text-xs text-muted-foreground">+180.1% from last month</p>
+      <CTitle title="subscriptions" />
+      <CTrend trend="+180.1% from last month" />
     </CardHeader>
     <CardContent className="space-y-6">
-      <div className="text-3xl text-gray-600 font-sans h-full font-light flex flex-1">
-        +2,350
-      </div>
+      <CValue value={"+2,350"} />
       <ChartContainer
         config={chartConfig}
-        className="place-self-end h-[60px] w-full"
+        className="place-self-end h-[80px] md:h-[60px] w-full"
       >
         <BarChart data={data}>
           <Bar
@@ -177,9 +198,7 @@ export function MetricStat() {
   return (
     <Card>
       <CardHeader className="flex whitespace-nowrap justify-between w-full">
-        <CardTitle className="font-semibold tracking-tighter">
-          Today&apos;s Forecast x Actual
-        </CardTitle>
+        <CTitle title="Forecast" />
         <CardDescription className="text-xs">
           Your sales is above the forecasted level by 5% so far.
         </CardDescription>
@@ -219,7 +238,11 @@ export function MetricStat() {
                 style: { fill: "var(--color-actual)" },
               }}
             />
-            <ChartTooltip content={<ChartTooltipContent />} />
+            <ChartTooltip
+              content={
+                <ChartTooltipContent className="bg-white/5 backdrop-blur-md" />
+              }
+            />
           </LineChart>
         </ChartContainer>
       </CardContent>

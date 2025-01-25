@@ -15,6 +15,7 @@ import {
 import { HyperList } from "../ui/list";
 import { Button } from "../ui/button";
 import { Icon, IconName } from "../ui/icons";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export interface Project {
   id: number;
@@ -28,6 +29,7 @@ export interface SwitcherProps {
 
 export function Switcher({ projects }: SwitcherProps) {
   const [activeProject, setActiveProject] = useState(projects[0]);
+  const isMobile = useIsMobile();
 
   const handleSelect = useCallback(
     (project: Project) => () => {
@@ -56,25 +58,31 @@ export function Switcher({ projects }: SwitcherProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="flex justify-center">
-        <Button size={"icon"} className="bg-slate-200">
-          <Icon name={activeProject.logo} className="text-foreground" />
+        <Button
+          size={"icon"}
+          className="bg-slate-200 dark:bg-transparent border dark:border-gray-700"
+        >
+          <Icon name={activeProject.logo} className="text-foreground size-6" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 border border-gray-300 bg-slate-100 rounded-lg"
+        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 border border-gray-400 text-gray-950 bg-gray-300 rounded-t-md rounded-b-lg"
         align="start"
         side="right"
-        sideOffset={12}
+        sideOffset={isMobile ? 8 : 12}
       >
-        <DropdownMenuLabel className="text-xs text-gray-600">
-          Projects
+        <DropdownMenuLabel className="text-xs py-3 flex justify-between">
+          <p className="font-bold">Projects</p>
+          <p className="bg-gray-400/20 size-4 flex items-center justify-center rounded-md">
+            {projects.length}
+          </p>
         </DropdownMenuLabel>
 
         <HyperList
           data={projects}
           component={ProjectItem}
           keyId="id"
-          container="border-y border-gray-300"
+          container="border-y border-gray-500"
         />
         <DropdownMenuSeparator />
         <DropdownMenuItem className="gap-2 p-2 cursor-pointer">

@@ -1,7 +1,6 @@
 "use client";
 
 import { NavMain } from "@/components/app/nav-main";
-import { NavSub } from "@/components/app/nav-sub";
 import { NavUser } from "@/components/app/nav-user";
 import { Project, Switcher } from "@/components/app/nav-switcher";
 import {
@@ -38,13 +37,13 @@ type ContentItem = {
 };
 
 export type SubContent = {
-  id: number;
+  id: string;
   name: string;
   icon: IconName;
   url: string;
 };
 
-export interface NavMainItem {
+export interface NavItem {
   id?: string;
   title?: string; //"Playground"
   href?: string; //"#"
@@ -55,8 +54,8 @@ export interface NavMainItem {
 interface SidebarData {
   user: UserData;
   projects: Project[];
-  navMain: NavMainItem[];
-  sub: SubContent[];
+  navMain: NavItem[];
+  sub: NavItem[];
 }
 
 const data: SidebarData = {
@@ -119,21 +118,27 @@ const data: SidebarData = {
 
   sub: [
     {
-      id: 0,
-      name: "Design Engineering",
-      url: "#",
+      id: "customers_0",
+      title: "customers",
+      href: "customers",
+      icon: "UsersIcon2",
+    },
+    {
+      id: "promos_1",
+      title: "Sales & Marketing",
+      href: "#",
       icon: "XLogomark",
     },
     {
-      id: 1,
-      name: "Sales & Marketing",
-      url: "#",
+      id: "settings_2",
+      title: "Travel",
+      href: "#",
       icon: "XLogomark",
     },
     {
-      id: 2,
-      name: "Travel",
-      url: "#",
+      id: "team_2",
+      title: "Travel",
+      href: "#",
       icon: "XLogomark",
     },
   ],
@@ -147,14 +152,22 @@ export const NewSidebar = () => (
       <HyperList
         data={data.navMain}
         component={SideBoob}
-        container="space-y-10 w-full flex flex-col pt-2 h-[calc(86vh)] items-center"
+        container="space-y-10 w-full flex flex-col pt-2 h-fit items-center"
+        delay={0.36}
+      />
+      <HyperList
+        data={data.sub}
+        component={SideBoob}
+        container="space-y-10 w-full flex flex-col border-t border-gray-300 pt-8 h-fit items-center"
         delay={0.36}
       />
     </TooltipProvider>
   </div>
 );
 
-interface SideBoobProps extends NavMainItem {
+export const ProjectSwitcher = () => <Switcher projects={data.projects} />;
+
+interface SideBoobProps extends NavItem {
   icon: IconName;
 }
 const SideBoob = ({ icon, title, href, ...props }: SideBoobProps) => {
@@ -182,7 +195,7 @@ const SideBoob = ({ icon, title, href, ...props }: SideBoobProps) => {
           />
           <Icon
             name={icon}
-            className={cn("size-6 relative z-[1]", {
+            className={cn("size-6 stroke-1 relative z-[1]", {
               "text-white": nav === href,
             })}
           />
@@ -193,7 +206,7 @@ const SideBoob = ({ icon, title, href, ...props }: SideBoobProps) => {
         side="right"
         align="center"
         sideOffset={12}
-        className="relative duration-300 z-[100] bg-gray-800 text-white"
+        className="relative capitalize duration-300 z-[100] bg-gray-800 text-white"
       >
         {title}
       </TooltipContent>
@@ -210,10 +223,9 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
         </SidebarHeader>
         <SidebarContent>
           <NavMain items={data.navMain} />
-          <NavSub items={data.sub} />
         </SidebarContent>
         <SidebarFooter>
-          <NavUser user={data.user} />
+          <NavUser />
         </SidebarFooter>
         <SidebarRail />
       </Sidebar>

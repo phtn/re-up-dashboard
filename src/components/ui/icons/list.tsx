@@ -58,6 +58,31 @@ function ArrowForward(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+function Apps(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      >
+        <rect width="6.5" height="6.5" x="3.75" y="3.75" rx="2"></rect>
+        <path d="M15.586 3.818a2 2 0 0 1 2.828 0l1.768 1.768a2 2 0 0 1 0 2.828l-1.768 1.768a2 2 0 0 1-2.828 0l-1.768-1.768a2 2 0 0 1 0-2.828z"></path>
+        <rect width="6.5" height="6.5" x="3.75" y="13.75" rx="1.5"></rect>
+        <rect width="6.5" height="6.5" x="13.75" y="13.75" rx="2"></rect>
+      </g>
+    </svg>
+  );
+}
 function ArrowUpDown(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -79,6 +104,47 @@ function ArrowUpDown(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+function ArrowRight(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="M4 12h15.879m-6.129 6.75l5.69-5.69c.292-.292.439-.676.439-1.06M13.75 5.25l5.69 5.69c.292.292.439.676.439 1.06"
+      ></path>
+    </svg>
+  );
+}
+
+function Dashbox(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="M12 20.25h4.25a4 4 0 0 0 4-4V12M12 20.25H7.75a4 4 0 0 1-4-4V12M12 20.25V3.75m0 0H7.75a4 4 0 0 0-4 4V12M12 3.75h4.25a4 4 0 0 1 4 4V12m-16.5 0h16.5"
+      ></path>
+    </svg>
+  );
+}
 function Box(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -94,6 +160,27 @@ function Box(props: SVGProps<SVGSVGElement>) {
         strokeLinejoin="round"
         strokeWidth="1.5"
         d="m7.687 9.687l2.66 1.426A3.5 3.5 0 0 0 12 11.53M7.687 9.687L3.884 7.65m3.803 2.038l8.496-4.555l.128-.07M3.884 7.648a3.5 3.5 0 0 0-.51 1.82v5.061a3.5 3.5 0 0 0 1.845 3.085l5.127 2.748A3.5 3.5 0 0 0 12 20.78M3.884 7.649a3.5 3.5 0 0 1 1.335-1.264l5.127-2.748a3.5 3.5 0 0 1 3.308 0L16.31 5.06M12 11.53a3.5 3.5 0 0 0 1.654-.416l6.462-3.464M12 11.529v9.25m0 0a3.5 3.5 0 0 0 1.654-.416l5.127-2.748a3.5 3.5 0 0 0 1.846-3.085V9.47a3.5 3.5 0 0 0-.511-1.821m0 0a3.5 3.5 0 0 0-1.335-1.264l-2.47-1.324"
+      ></path>
+    </svg>
+  );
+}
+
+function ChevRight(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="m9.75 4.75l6.19 6.19a1.5 1.5 0 0 1 0 2.12l-6.19 6.19"
       ></path>
     </svg>
   );
@@ -165,6 +252,49 @@ export function ListSquare(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+function PlusCircle(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      >
+        <circle cx="12" cy="12" r="9.25"></circle>
+        <path d="M12 8.5v7M8.5 12h7"></path>
+      </g>
+    </svg>
+  );
+}
+
+function Settings(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="M7.25 3.75a3.5 3.5 0 0 0-3.5 3.5v9.5a3.5 3.5 0 0 0 3.5 3.5h9.5a3.5 3.5 0 0 0 3.5-3.5v-9.5a3.5 3.5 0 0 0-3.5-3.5zM3.75 12h16.5"
+      ></path>
+    </svg>
+  );
+}
 function Squircle(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -202,6 +332,50 @@ function Tesla(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+function UsersIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="M15 19.128a9.4 9.4 0 0 0 2.625.372a9.3 9.3 0 0 0 4.121-.952q.004-.086.004-.173a4.125 4.125 0 0 0-7.536-2.32M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.3 12.3 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0a3.375 3.375 0 0 1 6.75 0m8.25 2.25a2.625 2.625 0 1 1-5.25 0a2.625 2.625 0 0 1 5.25 0"
+      ></path>
+    </svg>
+  );
+}
+
+export function UsersIcon2(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      >
+        <circle cx="12" cy="8.196" r="4.446"></circle>
+        <path d="M19.608 20.25a7.608 7.608 0 0 0-15.216 0"></path>
+      </g>
+    </svg>
+  );
+}
 function XLogomark(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -221,13 +395,21 @@ function XLogomark(props: SVGProps<SVGSVGElement>) {
 
 export const icons = {
   Apple,
+  Apps,
   ArrowUpDown,
   ArrowEnter,
   ArrowForward,
+  ArrowRight,
   Box,
+  ChevRight,
   DollarCircle,
+  Dashbox,
   ListSquare,
+  PlusCircle,
+  Settings,
   Squircle,
   Tesla,
+  UsersIcon,
+  UsersIcon2,
   XLogomark,
 };
