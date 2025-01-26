@@ -17,7 +17,7 @@ export function ThemeProvider({
 
   return (
     <NextThemesProvider {...props}>
-      <div className={`${theme}`}>{children}</div>
+      <div className={`${theme ?? `dark`}`}>{children}</div>
     </NextThemesProvider>
   );
 }

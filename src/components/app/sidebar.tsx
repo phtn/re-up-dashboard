@@ -45,8 +45,8 @@ export type SubContent = {
 
 export interface NavItem {
   id?: string;
-  title?: string; //"Playground"
-  href?: string; //"#"
+  title?: string;
+  href?: string;
   icon: IconName;
   items?: ContentItem[];
 }
@@ -145,23 +145,26 @@ const data: SidebarData = {
 };
 
 export const NewSidebar = () => (
-  <div className="flex flex-col items-center h-full space-y-8 pl-4 py-4 w-[5rem] border-0 border-avocado-300">
+  <div className="flex flex-col items-center h-full space-y-8 pl-4 py-4 w-[5rem]">
     <Switcher projects={data.projects} />
 
     <TooltipProvider delayDuration={0}>
       <HyperList
         data={data.navMain}
         component={SideBoob}
-        container="space-y-10 w-full flex flex-col pt-2 h-fit items-center"
+        container="space-y-10 w-full flex flex-col py-2 h-fit items-center"
         delay={0.36}
       />
       <HyperList
         data={data.sub}
         component={SideBoob}
-        container="space-y-10 w-full flex flex-col border-t border-gray-300 pt-8 h-fit items-center"
+        container="space-y-10 w-full flex flex-col border-t border-gray-300 py-12 h-fit items-center"
         delay={0.36}
       />
     </TooltipProvider>
+    <div className="flex h-full items-end">
+      <NavUser />
+    </div>
   </div>
 );
 
@@ -187,17 +190,23 @@ const SideBoob = ({ icon, title, href, ...props }: SideBoobProps) => {
           <Icon
             name="Squircle"
             className={cn(
-              "absolute pointer-events-none group-hover/boob:text-slate-200 size-10 text-white z-0",
+              "absolute pointer-events-none size-11 text-white dark:text-gray-100/0 z-0",
+              "group-hover/boob:text-gray-200/80 dark:group-hover/boob:text-gray-400",
               {
-                "text-slate-900 group-hover/boob:text-slate-900": nav === href,
+                "text-gray-900 dark:text-gray-100 group-hover/boob:text-gray-900/80 dark:group-hover/boob:text-gray-400/80":
+                  nav === href,
               },
             )}
           />
           <Icon
             name={icon}
-            className={cn("size-6 stroke-1 relative z-[1]", {
-              "text-white": nav === href,
-            })}
+            className={cn(
+              "size-6 text-gray-500 stroke-1 relative z-[1] dark:group-hover/boob:text-background group-hover/boob:text-gray-900",
+              {
+                "text-gray-200 group-hover/boob:text-gray-100 dark:text-gray-900":
+                  nav === href,
+              },
+            )}
           />
         </Link>
       </TooltipTrigger>

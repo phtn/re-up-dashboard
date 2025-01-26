@@ -306,7 +306,7 @@ function Squircle(props: SVGProps<SVGSVGElement>) {
     >
       <path
         fill="currentColor"
-        stroke="currentColor"
+        stroke="none"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"

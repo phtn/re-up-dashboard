@@ -12,6 +12,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
       attribute="class"
       defaultTheme="system"
       disableTransitionOnChange
+      enableColorScheme
       enableSystem
     >
       <ConvexCtxProvider>

@@ -165,7 +165,7 @@ export default function SampleTable() {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
-              className="bg-slate-100 w-full border-0"
+              className="bg-gray-400/10 w-full border-0"
             >
               <SortableContext
                 items={columnOrder}
@@ -184,7 +184,7 @@ export default function SampleTable() {
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="h-12 border-0 hover:bg-stone-100"
+                className="h-12 border-0 hover:bg-gray-500/10"
               >
                 {row.getVisibleCells().map((cell) => (
                   <SortableContext

@@ -2,13 +2,7 @@
 
 import { Bar, BarChart, Line, LineChart } from "recharts";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -56,22 +50,24 @@ const data = [
 const chartConfig = {
   revenue: {
     label: "Revenue",
-    color: "hsl(var(--primary))",
+    color: "var(--primary)",
   },
   subscription: {
     label: "Subscriptions",
-    color: "hsl(var(--primary))",
+    color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
 const CTitle = (props: { title: string }) => (
-  <CardTitle className="md:font-semibold capitalize text-lg md:text-[16px] tracking-tight text-gray-600">
+  <CardTitle className="md:font-semibold capitalize text-base md:text-[16px] tracking-tight text-foreground/60">
     {props.title}
   </CardTitle>
 );
 
 const CValue = (props: { value: string | number }) => (
-  <div className="text-3xl font-sans font-light">{props.value}</div>
+  <div className="text-3xl font-geist-sans tracking-tight font-extrabold">
+    {props.value}
+  </div>
 );
 
 const CScope = (props: { scope: string }) => (
@@ -87,22 +83,25 @@ const CScope = (props: { scope: string }) => (
 );
 
 const CTrend = (props: { trend: string }) => (
-  <p className="text-xs font-light md:font-normal dark:text-gray-400">
+  <p className="text-xs font-light md:font-normal text-foreground/60">
     {props.trend}
   </p>
 );
 
 export function CardStat() {
   return (
-    <Card className="space-y-3 w-full">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CTitle title="total revenue" />
         <CScope scope="today" />
       </CardHeader>
 
-      <CardContent className="pb-0 space-y-4 md:space-y-10">
+      <CardContent className="pb-0 space-y-4">
         <CValue value={"$15,231.89"} />
-        <ChartContainer config={chartConfig} className="md:h-[60px] w-full">
+        <ChartContainer
+          config={chartConfig}
+          className="place-self-end h-[80px] md:h-[60px] w-full"
+        >
           <LineChart
             data={data}
             margin={{
@@ -129,12 +128,12 @@ export function CardStat() {
 }
 
 export const BChart = () => (
-  <Card className="space-y-3">
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+  <Card>
+    <CardHeader className="flex flex-row items-center justify-between">
       <CTitle title="subscriptions" />
       <CTrend trend="+180.1% from last month" />
     </CardHeader>
-    <CardContent className="space-y-6">
+    <CardContent className="space-y-4 pb-0">
       <CValue value={"+2,350"} />
       <ChartContainer
         config={chartConfig}
@@ -155,11 +154,11 @@ export const BChart = () => (
 const chartConfig2 = {
   actual: {
     label: "Actual",
-    color: "hsl(var(--primary))",
+    color: "var(--primary)",
   },
   forecast: {
     label: "Forecast",
-    color: "hsl(var(--primary))",
+    color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
@@ -197,17 +196,11 @@ const data2 = [
 export function MetricStat() {
   return (
     <Card>
-      <CardHeader className="flex whitespace-nowrap justify-between w-full">
+      <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CTitle title="Forecast" />
-        <CardDescription className="text-xs">
-          Your sales is above the forecasted level by 5% so far.
-        </CardDescription>
       </CardHeader>
       <CardContent className="pb-4">
-        <ChartContainer
-          config={chartConfig2}
-          className="w-full text-void md:h-[102px]"
-        >
+        <ChartContainer config={chartConfig2} className="w-full md:h-[102px]">
           <LineChart
             data={data2}
             margin={{

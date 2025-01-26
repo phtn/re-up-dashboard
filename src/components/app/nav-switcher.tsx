@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { HyperList } from "../ui/list";
-import { Button } from "../ui/button";
 import { Icon, IconName } from "../ui/icons";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -43,7 +42,7 @@ export function Switcher({ projects }: SwitcherProps) {
       <DropdownMenuItem
         onClick={handleSelect(project)}
         key={project.name}
-        className="gap-2 p-2"
+        className="gap-2 p-2 cursor-pointer hover:bg-zinc-400/30"
       >
         <div className="flex size-6 items-center justify-center">
           <Icon name={project.logo} className="size-3.5 shrink-0" />
@@ -58,12 +57,12 @@ export function Switcher({ projects }: SwitcherProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="flex justify-center">
-        <Button size={"icon"} className="bg-slate-200 dark:bg-transparent">
-          <Icon name={activeProject.logo} className="text-foreground size-6" />
-        </Button>
+        <button className="dark:bg-transparent size-8 flex items-center justify-center">
+          <Icon name={activeProject.logo} className="size-6" />
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 border border-gray-400 text-gray-950 bg-gray-300 rounded-t-md rounded-b-lg"
+        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 border border-gray-400 dark:border-gray-300 text-gray-950 bg-gray-300 dark:bg-gray-300 rounded-t-md rounded-b-lg"
         align="start"
         side="right"
         sideOffset={isMobile ? 8 : 12}
@@ -82,8 +81,8 @@ export function Switcher({ projects }: SwitcherProps) {
           container="border-y border-gray-500"
         />
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="gap-2 p-2 cursor-pointer">
-          <div className="flex size-6 items-center justify-center bg-background">
+        <DropdownMenuItem className="gap-2 p-2 cursor-pointer hover:bg-zinc-400/30">
+          <div className="flex size-6 items-center justify-center">
             <Plus className="size-3.5" />
           </div>
           <div className="font-medium">Add Project</div>

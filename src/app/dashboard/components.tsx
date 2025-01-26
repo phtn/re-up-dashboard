@@ -28,16 +28,10 @@ export const Header = ({ children }: { children?: ReactNode }) => {
               <BreadcrumbItem>
                 <BreadcrumbLink
                   href="#"
-                  className="font-bold capitalize text-lg md:text-xl"
+                  className="font-bold capitalize text-lg md:text-2xl"
                 >
                   {nav ?? `sales`}
                 </BreadcrumbLink>
-                <Button
-                  className="hover:bg-gray-200 rounded-full size-7"
-                  size={"icon"}
-                >
-                  <Icon name="PlusCircle" />
-                </Button>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -64,7 +58,7 @@ export const ActionButton = () => {
     <button
       className={cn(
         "size-12 flex items-center justify-center fixed right-8 bottom-8 z-50 rounded-full",
-        "text-sm bg-amber-300 cursor-pointer",
+        "text-sm bg-amber-300 cursor-pointer text-gray-800 font-semibold",
         "active:scale-95 transition-all duration-300",
       )}
     >

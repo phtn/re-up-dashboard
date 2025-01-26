@@ -1,13 +1,12 @@
 "use client";
-
-import CustomerTable from "@/components/ui/table/customers";
+import SampleTable from "@/components/ui/table/index";
 
 export const Content = () => {
   return (
     <main>
       <div className="px-4">
         <div className="h-fit rounded-lg overflow-hidden border border-gray-400 w-full md:min-h-min">
-          <CustomerTable />
+          <SampleTable />
         </div>
 
         <div className="h-24"></div>

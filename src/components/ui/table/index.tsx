@@ -28,17 +28,53 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
-  Cell,
-  ColumnDef,
-  Header,
-  SortingState,
+  createColumnHelper,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import type {
+  Cell,
+  ColumnDef,
+  Header,
+  SortingState,
+} from "@tanstack/react-table";
 import { ChevronDown, ChevronUp, GripVertical } from "lucide-react";
-import { CSSProperties, useEffect, useId, useState } from "react";
+import {
+  type CSSProperties,
+  useCallback,
+  useEffect,
+  useId,
+  useState,
+} from "react";
+import { renderHeader } from "./header";
+import { getCell, type CellType } from "./cell";
+
+interface ICreateColumn<T> {
+  id?: keyof T;
+  accessor: keyof T;
+  header?: string;
+  cell?: string;
+  sortUndefined?: false | 1 | -1 | "last" | "first";
+  sortDescFirst?: boolean;
+  cellType?: CellType;
+  width?: string;
+}
+
+export const createColumn = <T,>(props: ICreateColumn<T>) =>
+  createColumnHelper().accessor(props.accessor as string, {
+    ...props,
+    id: props.accessor as string,
+    header: renderHeader({
+      header: props.header ?? (props.accessor as string),
+      width: props.width,
+    }),
+    cell: getCell(
+      props.cellType ?? "text",
+      props.cell ?? (props.accessor as string),
+    ),
+  }) as ColumnDef<T>;
 
 type Item = {
   id: string;
@@ -48,53 +84,31 @@ type Item = {
   flag: string;
   status: "Active" | "Inactive" | "Pending";
   balance: number;
+  photo_url: string;
 };
 
 const columns: ColumnDef<Item>[] = [
-  {
-    id: "name",
-    header: "Name",
-    accessorKey: "name",
-    cell: ({ row }) => (
-      <div className="truncate font-medium">{row.getValue("name")}</div>
-    ),
-    sortUndefined: "last",
-    sortDescFirst: false,
-  },
-  {
-    id: "email",
-    header: "Email",
-    accessorKey: "email",
-  },
-  {
-    id: "location",
-    header: "Location",
-    accessorKey: "location",
-    cell: ({ row }) => (
-      <div className="truncate">
-        <span className="text-lg leading-none">{row.original.flag}</span>{" "}
-        {row.getValue("location")}
-      </div>
-    ),
-  },
-  {
-    id: "status",
-    header: "Status",
-    accessorKey: "status",
-  },
-  {
-    id: "balance",
-    header: "Amount $",
-    accessorKey: "balance",
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("balance"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-      return <div className="flex justify-end w-20">{formatted}</div>;
-    },
-  },
+  createColumn({
+    accessor: "name",
+    header: "customer",
+    cellType: "person",
+  }),
+  createColumn({
+    accessor: "email",
+  }),
+  createColumn({
+    accessor: "location",
+    cellType: "date",
+  }),
+  createColumn({
+    accessor: "status",
+    cellType: "status",
+    width: "w-24",
+  }),
+  createColumn({
+    accessor: "balance",
+    cellType: "money",
+  }),
 ];
 
 export default function SampleTable() {
@@ -112,7 +126,7 @@ export default function SampleTable() {
         "https://res.cloudinary.com/dlzlfasou/raw/upload/users-01_fertyx.json",
       );
       const data = await res.json();
-      setData(data.slice(0, 10)); // Limit to 5 items
+      setData(data.slice(0, 20)); //  Limit to 5 items
       setPending(false);
     }
     fetchPosts().catch(console.error);
@@ -135,7 +149,7 @@ export default function SampleTable() {
   });
 
   // reorder columns after drag & drop
-  function handleDragEnd(event: DragEndEvent) {
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
     if (active && over && active.id !== over.id) {
       setColumnOrder((columnOrder) => {
@@ -144,7 +158,7 @@ export default function SampleTable() {
         return arrayMove(columnOrder, oldIndex, newIndex); //this is just a splice util
       });
     }
-  }
+  }, []);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
@@ -165,7 +179,7 @@ export default function SampleTable() {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
-              className="bg-slate-100 w-full border-0"
+              className="capitalize bg-gray-400/10 text-foreground/60 font-medium w-full border-0"
             >
               <SortableContext
                 items={columnOrder}
@@ -184,7 +198,7 @@ export default function SampleTable() {
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="h-12 border-0 hover:bg-stone-100"
+                className="h-16 border-b-[0.33px] border-gray-400/40 hover:bg-gray-500/5"
               >
                 {row.getVisibleCells().map((cell) => (
                   <SortableContext

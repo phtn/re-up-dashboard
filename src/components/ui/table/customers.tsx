@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { cn } from "@/lib/utils";
 import type { SelectCustomer } from "@/vx/customers/d";
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
@@ -29,15 +28,8 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type {
-  Cell,
-  CellContext,
-  ColumnDef,
-  Header,
-  SortingState,
-} from "@tanstack/react-table";
+import type { Cell, Header, SortingState } from "@tanstack/react-table";
 import {
-  createColumnHelper,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -46,89 +38,27 @@ import {
 import { ChevronDown, ChevronUp, GripVertical } from "lucide-react";
 import {
   type CSSProperties,
-  type ReactElement,
+  useCallback,
   useEffect,
   useId,
   useState,
 } from "react";
-
-interface CellProps<T, D> {
-  prop: D;
-  ctx?: CellContext<T, unknown>;
-}
-
-const numberCell = <T, D extends string>({ prop, ctx }: CellProps<T, D>) => (
-  <div className="flex h-full items-center">
-    <p
-      className={cn(
-        "font-inter text-sm font-bold tracking-tight text-foreground/30",
-      )}
-    >
-      {ctx?.row.getValue(prop)}
-    </p>
-  </div>
-);
-
-const titleCell = <T, D extends string>({ prop, ctx }: CellProps<T, D>) => (
-  <div className="flex h-full">
-    <p
-      className={cn(
-        "font-inter text-sm font-bold tracking-tight text-foreground/30",
-      )}
-    >
-      {ctx?.row.getValue(prop)}
-    </p>
-  </div>
-);
-
-const cellValue =
-  <T, D extends string>(prop: D) =>
-  (ctx: CellContext<T, unknown>) =>
-    numberCell<T, D>({ prop, ctx });
-
-const cellTitle =
-  <T, D extends string>(prop: D) =>
-  (ctx: CellContext<T, unknown>) =>
-    titleCell<T, D>({ prop, ctx });
-
-interface ICreateColumn<T> {
-  id?: keyof T;
-  accessor: keyof T;
-  header: string;
-  cell?: (ctx: CellContext<T, unknown>) => ReactElement;
-  sortUndefined?: false | 1 | -1 | "last" | "first";
-  sortDescFirst?: boolean;
-}
-
-const createColumn = <T,>({
-  cell,
-  accessor,
-  sortUndefined = "last",
-  sortDescFirst = false,
-  ...rest
-}: ICreateColumn<T>) =>
-  createColumnHelper().accessor(accessor as string, {
-    ...rest,
-    id: accessor as string,
-    cell: () => cell,
-    sortDescFirst,
-    sortUndefined,
-  }) as ColumnDef<T>;
+import { createColumn } from ".";
 
 const customer_id = createColumn<SelectCustomer>({
   accessor: "customer_id",
   header: "Id",
-  cell: cellValue("customer_id"),
+  cell: "customer_id",
 });
 const username = createColumn<SelectCustomer>({
   accessor: "username",
   header: "Username",
-  cell: cellTitle("username"),
+  cell: "username",
 });
 
 const columns = [customer_id, username];
 
-export default function CustomerTable() {
+export const CustomerTable = () => {
   const [data, setData] = useState<SelectCustomer[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pending, setPending] = useState(false);
@@ -165,8 +95,7 @@ export default function CustomerTable() {
     enableSortingRemoval: false,
   });
 
-  // reorder columns after drag & drop
-  function handleDragEnd(event: DragEndEvent) {
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
     if (active && over && active.id !== over.id) {
       setColumnOrder((columnOrder) => {
@@ -175,7 +104,7 @@ export default function CustomerTable() {
         return arrayMove(columnOrder, oldIndex, newIndex); //this is just a splice util
       });
     }
-  }
+  }, []);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
@@ -196,7 +125,7 @@ export default function CustomerTable() {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
-              className="bg-slate-100 w-full border-0"
+              className="w-full py-2 bg-gray-400/10 border-0"
             >
               <SortableContext
                 items={columnOrder}
@@ -215,7 +144,7 @@ export default function CustomerTable() {
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="h-12 border-0 hover:bg-stone-100"
+                className="h-12 border-0 hover:bg-gray-500/10"
               >
                 {row.getVisibleCells().map((cell) => (
                   <SortableContext
@@ -240,7 +169,7 @@ export default function CustomerTable() {
       <p className="mt-4 text-center text-sm">{pending ? `loading` : ``}</p>
     </DndContext>
   );
-}
+};
 
 const DraggableTableHeader = ({
   header,

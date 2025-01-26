@@ -73,10 +73,10 @@ export function NavUser() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-[--radix-dropdown-menu-trigger-width] mb-4 min-w-56 rounded-lg text-gray-950 dark:bg-gray-300 bg-gray-300"
-        side={isMobile ? "bottom" : "top"}
+        className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg text-gray-950 border border-gray-400 dark:border-gray-300 dark:bg-gray-300 bg-gray-300"
+        side={isMobile ? "left" : "right"}
         align="end"
-        sideOffset={0}
+        sideOffset={10}
         alignOffset={0}
       >
         <DropdownMenuLabel className="p-0 border-b border-gray-500 font-normal">
@@ -92,7 +92,7 @@ export function NavUser() {
             data={modes}
             component={ModeItem}
             keyId="id"
-            container="p-2"
+            container="p-2 space-y-0.5"
           />
         </DropdownMenuGroup>
       </DropdownMenuContent>
