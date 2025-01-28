@@ -1,11 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
@@ -24,114 +22,25 @@ import {
   SortableContext,
   arrayMove,
   horizontalListSortingStrategy,
-  useSortable,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import {
-  createColumnHelper,
-  flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type {
-  Cell,
-  ColumnDef,
-  Header,
-  SortingState,
-} from "@tanstack/react-table";
-import { ChevronDown, ChevronUp, GripVertical } from "lucide-react";
-import {
-  type CSSProperties,
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-} from "react";
-import { renderHeader } from "./header";
-import { getCell, type CellType } from "./cell";
+import type { ColumnDef, SortingState } from "@tanstack/react-table";
+import { useCallback, useId, useState } from "react";
+import { DragAlongCell, DraggableTableHeader } from "./components";
 
-interface ICreateColumn<T> {
-  id?: keyof T;
-  accessor: keyof T;
-  header?: string;
-  cell?: string;
-  sortUndefined?: false | 1 | -1 | "last" | "first";
-  sortDescFirst?: boolean;
-  cellType?: CellType;
-  width?: string;
+export interface DataTableProps<T> {
+  columns: ColumnDef<T>[];
+  data: T[];
 }
-
-export const createColumn = <T,>(props: ICreateColumn<T>) =>
-  createColumnHelper().accessor(props.accessor as string, {
-    ...props,
-    id: props.accessor as string,
-    header: renderHeader({
-      header: props.header ?? (props.accessor as string),
-      width: props.width,
-    }),
-    cell: getCell(
-      props.cellType ?? "text",
-      props.cell ?? (props.accessor as string),
-    ),
-  }) as ColumnDef<T>;
-
-type Item = {
-  id: string;
-  name: string;
-  email: string;
-  location: string;
-  flag: string;
-  status: "Active" | "Inactive" | "Pending";
-  balance: number;
-  photo_url: string;
-};
-
-const columns: ColumnDef<Item>[] = [
-  createColumn({
-    accessor: "name",
-    header: "customer",
-    cellType: "person",
-  }),
-  createColumn({
-    accessor: "email",
-  }),
-  createColumn({
-    accessor: "location",
-    cellType: "date",
-  }),
-  createColumn({
-    accessor: "status",
-    cellType: "status",
-    width: "w-24",
-  }),
-  createColumn({
-    accessor: "balance",
-    cellType: "money",
-  }),
-];
-
-export default function SampleTable() {
-  const [data, setData] = useState<Item[]>([]);
+export default function DataTable<T>({ columns, data }: DataTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pending, setPending] = useState(false);
   const [columnOrder, setColumnOrder] = useState<string[]>(
     columns.map((column) => column.id as string),
   );
-
-  useEffect(() => {
-    async function fetchPosts() {
-      setPending(true);
-      const res = await fetch(
-        "https://res.cloudinary.com/dlzlfasou/raw/upload/users-01_fertyx.json",
-      );
-      const data = await res.json();
-      setData(data.slice(0, 20)); //  Limit to 5 items
-      setPending(false);
-    }
-    fetchPosts().catch(console.error);
-    setPending(false);
-  }, []);
 
   const table = useReactTable({
     data,
@@ -155,7 +64,7 @@ export default function SampleTable() {
       setColumnOrder((columnOrder) => {
         const oldIndex = columnOrder.indexOf(active.id as string);
         const newIndex = columnOrder.indexOf(over.id as string);
-        return arrayMove(columnOrder, oldIndex, newIndex); //this is just a splice util
+        return arrayMove(columnOrder, oldIndex, newIndex);
       });
     }
   }, []);
@@ -213,142 +122,11 @@ export default function SampleTable() {
             ))
           ) : (
             <TableRow>
-              <TableCell className="h-32 text-center">
-                {pending ? `Loading...` : `No results.`}
-              </TableCell>
+              <TableCell className="h-32 text-center">No results.</TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-      <p className="mt-4 text-center text-sm">{pending ? `loading` : ``}</p>
     </DndContext>
   );
 }
-
-const DraggableTableHeader = ({
-  header,
-}: {
-  header: Header<Item, unknown>;
-}) => {
-  const {
-    attributes,
-    isDragging,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({
-    id: header.column.id,
-  });
-
-  const style: CSSProperties = {
-    opacity: isDragging ? 0.8 : 1,
-    position: "relative",
-    transform: CSS.Translate.toString(transform),
-    transition,
-    whiteSpace: "nowrap",
-    width: header.column.getSize(),
-    zIndex: isDragging ? 1 : 0,
-  };
-
-  return (
-    <TableHead
-      ref={setNodeRef}
-      className="relative h-10 border-0 before:absolute before:inset-y-0 before:start-0 before:w-px before:bg-border first:before:bg-transparent"
-      style={style}
-      aria-sort={
-        header.column.getIsSorted() === "asc"
-          ? "ascending"
-          : header.column.getIsSorted() === "desc"
-            ? "descending"
-            : "none"
-      }
-    >
-      <div className="flex items-center justify-start gap-0.5">
-        <Button
-          size="icon"
-          variant="ghost"
-          className="-ml-2 size-7 shadow-none cursor-grabbing"
-          {...attributes}
-          {...listeners}
-          aria-label="Drag to reorder"
-        >
-          <GripVertical
-            className="opacity-20"
-            size={12}
-            strokeWidth={2}
-            aria-hidden="true"
-          />
-        </Button>
-        <span className="grow truncate">
-          {header.isPlaceholder
-            ? null
-            : flexRender(header.column.columnDef.header, header.getContext())}
-        </span>
-        <Button
-          size="icon"
-          variant="ghost"
-          className="group -mr-1 size-7 shadow-none"
-          onClick={header.column.getToggleSortingHandler()}
-          onKeyDown={(e) => {
-            // Enhanced keyboard handling for sorting
-            if (
-              header.column.getCanSort() &&
-              (e.key === "Enter" || e.key === " ")
-            ) {
-              e.preventDefault();
-              header.column.getToggleSortingHandler()?.(e);
-            }
-          }}
-        >
-          {{
-            asc: (
-              <ChevronUp
-                className="shrink-0 opacity-60"
-                size={16}
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-            ),
-            desc: (
-              <ChevronDown
-                className="shrink-0 opacity-60"
-                size={16}
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-            ),
-          }[header.column.getIsSorted() as string] ?? (
-            <ChevronUp
-              className="shrink-0 opacity-0 group-hover:opacity-60"
-              size={16}
-              strokeWidth={2}
-              aria-hidden="true"
-            />
-          )}
-        </Button>
-      </div>
-    </TableHead>
-  );
-};
-
-const DragAlongCell = ({ cell }: { cell: Cell<Item, unknown> }) => {
-  const { isDragging, setNodeRef, transform, transition } = useSortable({
-    id: cell.column.id,
-  });
-
-  const style: CSSProperties = {
-    opacity: isDragging ? 0.8 : 1,
-    position: "relative",
-    transform: CSS.Translate.toString(transform),
-    transition,
-    width: cell.column.getSize(),
-    zIndex: isDragging ? 1 : 0,
-  };
-
-  return (
-    <TableCell ref={setNodeRef} className="truncate" style={style}>
-      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-    </TableCell>
-  );
-};

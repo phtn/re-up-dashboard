@@ -6,6 +6,7 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]),
     CONVEX_DEPLOYMENT: z.string(),
     AUTHORIZED_ADMIN: z.string(),
+    PEXELS_API: z.string(),
   },
   client: {
     NEXT_PUBLIC_CONVEX_URL: z.string().url(),
@@ -35,6 +36,8 @@ export const env = createEnv({
     NEXT_PUBLIC_MEASUREMENTID: process.env.NEXT_PUBLIC_MEASUREMENTID,
     ////AUTHORIZED
     AUTHORIZED_ADMIN: process.env.AUTHORIZED_ADMIN,
+    ////PEXELS
+    PEXELS_API: process.env.PEXELS_API,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 

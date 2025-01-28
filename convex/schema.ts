@@ -11,9 +11,7 @@ export default defineSchema({
       searchField: "email",
     })
     .index("by_customer_id", ["customer_id"]),
-  sales: defineTable(SaleSchema).searchIndex("by_sale_id", {
-    searchField: "sale_id",
-  }),
+  sales: defineTable(SaleSchema).index("by_sale_id", ["sale_id"]),
   items: defineTable(ItemSchema).searchIndex("by_item_id", {
     searchField: "item_id",
   }),

@@ -2,7 +2,7 @@ import { query, mutation } from "@/vxs/server";
 import { v } from "convex/values";
 
 export const all = query({
-  handler: async ({ db }) => await db.query("sales").collect(),
+  handler: async ({ db }) => (await db.query("sales").collect()).reverse(),
 });
 
 export const byId = mutation({
@@ -10,6 +10,6 @@ export const byId = mutation({
   handler: async ({ db }, { sale_id }) =>
     await db
       .query("sales")
-      .withSearchIndex("by_sale_id", (q) => q.search("sale_id", sale_id))
+      .withIndex("by_sale_id", (q) => q.eq("sale_id", sale_id))
       .first(),
 });

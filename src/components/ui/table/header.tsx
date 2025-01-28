@@ -19,10 +19,11 @@ function ColumnHeader<TData, TValue>({
   className,
   header,
 }: DataTableColumnHeaderProps<TData, TValue>) {
-  return (
+  const isHidden = header === "hidden";
+  return isHidden ? null : (
     <div
       className={cn(
-        "font-bold text-slate-500/80 dark:text-gray-500",
+        "font-bold text-slate-600/80 dark:text-gray-500",
         className,
       )}
     >

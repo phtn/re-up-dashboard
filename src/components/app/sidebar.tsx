@@ -152,14 +152,15 @@ export const NewSidebar = () => (
       <HyperList
         data={data.navMain}
         component={SideBoob}
-        container="space-y-10 w-full flex flex-col py-2 h-fit items-center"
+        container="space-y-10 w-full flex flex-col py-4 h-fit items-center"
         delay={0.36}
       />
+      <div className="h-px -x-24 animate-in transition-all duration-500 delay-400 translate-x-0 bg-gray-300 dark:bg-slate-700 w-8" />
       <HyperList
         data={data.sub}
         component={SideBoob}
-        container="space-y-10 w-full flex flex-col border-t border-gray-300 py-12 h-fit items-center"
-        delay={0.36}
+        container="space-y-10 w-full flex flex-col py-4 h-fit items-center"
+        delay={0.72}
       />
     </TooltipProvider>
     <div className="flex h-full items-end">
@@ -190,12 +191,13 @@ const SideBoob = ({ icon, title, href, ...props }: SideBoobProps) => {
           <Icon
             name="Squircle"
             className={cn(
-              "absolute pointer-events-none size-11 text-white dark:text-gray-100/0 z-0",
+              "absolute pointer-events-none size-11 text-transparent z-0",
               "group-hover/boob:text-gray-200/80 dark:group-hover/boob:text-gray-400",
               {
-                "text-gray-900 dark:text-gray-100 group-hover/boob:text-gray-900/80 dark:group-hover/boob:text-gray-400/80":
+                "text-gray-900 group-hover/boob:text-gray-900/80 dark:group-hover/boob:text-gray-400/80":
                   nav === href,
               },
+              { "dark:text-gray-500": nav === href },
             )}
           />
           <Icon
@@ -203,9 +205,9 @@ const SideBoob = ({ icon, title, href, ...props }: SideBoobProps) => {
             className={cn(
               "size-6 text-gray-500 stroke-1 relative z-[1] dark:group-hover/boob:text-background group-hover/boob:text-gray-900",
               {
-                "text-gray-200 group-hover/boob:text-gray-100 dark:text-gray-900":
-                  nav === href,
+                "text-gray-400 group-hover/boob:text-gray-100": nav === href,
               },
+              { "dark:text-gray-100 text-gray-100": nav === href },
             )}
           />
         </Link>

@@ -2,7 +2,7 @@ import { query, mutation } from "@/vxs/server";
 import { v } from "convex/values";
 
 export const all = query({
-  handler: async ({ db }) => await db.query("customers").collect(),
+  handler: async ({ db }) => (await db.query("customers").collect()).reverse(),
 });
 
 export const byId = mutation({

@@ -1,84 +1,96 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import type { SelectCustomer } from "@/vx/customers/d";
-import type { DragEndEvent } from "@dnd-kit/core";
 import {
-  DndContext,
-  KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
-import {
-  SortableContext,
-  arrayMove,
-  horizontalListSortingStrategy,
-  useSortable,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import type { Cell, Header, SortingState } from "@tanstack/react-table";
-import {
-  flexRender,
+  type ColumnDef,
+  type SortingState,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronDown, ChevronUp, GripVertical } from "lucide-react";
+import { Id } from "@/vx/_generated/dataModel";
+import { createColumn } from "./column";
+import { useCallback, useId, useState } from "react";
+import { DataTableProps } from ".";
 import {
-  type CSSProperties,
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-} from "react";
-import { createColumn } from ".";
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  horizontalListSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
+import { restrictToHorizontalAxis } from "@dnd-kit/modifiers";
+import { Table, TableBody, TableCell, TableHeader, TableRow } from "../table";
+import { DraggableTableHeader, DragAlongCell } from "./components";
+import { Options } from "./options";
+import { Icon } from "../icons";
 
-const customer_id = createColumn<SelectCustomer>({
-  accessor: "customer_id",
-  header: "Id",
-  cell: "customer_id",
-});
-const username = createColumn<SelectCustomer>({
-  accessor: "username",
-  header: "Username",
-  cell: "username",
-});
+export interface ConvexInternal {
+  _id?: Id<"customers">;
+  _creationTime?: number;
+}
+export const cx_cols: ColumnDef<SelectCustomer & ConvexInternal>[] = [
+  createColumn({
+    accessor: "customer_id",
+    header: "ID",
+    cellType: "id",
+  }),
+  createColumn({
+    accessor: "photo_url",
+    header: "Photo",
+    cellType: "photo",
+    width: "w-fit",
+  }),
+  createColumn({
+    accessor: "fullname",
+    header: "Name",
+    cellType: "name",
+    width: "w-28",
+  }),
+  createColumn({
+    accessor: "email",
+    header: "email",
+    cellType: "text",
+    width: "w-28",
+  }),
+  createColumn({
+    accessor: "phone_number",
+    header: "Phone",
+    cellType: "text",
+  }),
+  createColumn({
+    accessor: "discount_id",
+    header: "discount (%)",
+    cellType: "status",
+    width: "w-20",
+  }),
+  createColumn({
+    accessor: "is_active",
+    header: "status",
+    cellType: "bool",
+    width: "w-24",
+  }),
+  createColumn({
+    accessor: "_id",
+    header: "internal",
+    cellType: "internal",
+  }),
+];
 
-const columns = [customer_id, username];
-
-export const CustomerTable = () => {
-  const [data, setData] = useState<SelectCustomer[]>([]);
+export const CustomersTable = ({
+  columns,
+  data,
+}: DataTableProps<SelectCustomer>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pending, setPending] = useState(false);
   const [columnOrder, setColumnOrder] = useState<string[]>(
     columns.map((column) => column.id as string),
   );
-
-  useEffect(() => {
-    async function fetchPosts() {
-      setPending(true);
-      const res = await fetch(
-        "https://res.cloudinary.com/dlzlfasou/raw/upload/users-01_fertyx.json",
-      );
-      const data = await res.json();
-      setData(data.slice(0, 10)); // Limit to 5 items
-      setPending(false);
-    }
-    fetchPosts().catch(console.error);
-    setPending(false);
-  }, []);
 
   const table = useReactTable({
     data,
@@ -95,13 +107,14 @@ export const CustomerTable = () => {
     enableSortingRemoval: false,
   });
 
+  // reorder columns after drag & drop
   const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
     if (active && over && active.id !== over.id) {
       setColumnOrder((columnOrder) => {
         const oldIndex = columnOrder.indexOf(active.id as string);
         const newIndex = columnOrder.indexOf(over.id as string);
-        return arrayMove(columnOrder, oldIndex, newIndex); //this is just a splice util
+        return arrayMove(columnOrder, oldIndex, newIndex);
       });
     }
   }, []);
@@ -125,7 +138,7 @@ export const CustomerTable = () => {
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
-              className="w-full py-2 bg-gray-400/10 border-0"
+              className="capitalize bg-gray-400/10 text-gray-400/80 font-medium w-full border-0"
             >
               <SortableContext
                 items={columnOrder}
@@ -135,6 +148,9 @@ export const CustomerTable = () => {
                   <DraggableTableHeader key={header.id} header={header} />
                 ))}
               </SortableContext>
+              <TableCell className="flex items-center justify-end pe-4 h-10">
+                options
+              </TableCell>
             </TableRow>
           ))}
         </TableHeader>
@@ -144,7 +160,7 @@ export const CustomerTable = () => {
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="h-12 border-0 hover:bg-gray-500/10"
+                className="h-16 border-b-[0.33px] w-full border-gray-400/40 hover:bg-gray-500/5"
               >
                 {row.getVisibleCells().map((cell) => (
                   <SortableContext
@@ -155,146 +171,22 @@ export const CustomerTable = () => {
                     <DragAlongCell key={cell.id} cell={cell} />
                   </SortableContext>
                 ))}
+                <TableCell className="flex items-center h-16 pe-4 justify-end">
+                  <Options id={row.getValue("_id")} table={"customers"}>
+                    <button className="cursor-pointer w-fit hover:bg-gray-300/40 rounded-full">
+                      <Icon name="MoreHori" className="size-5 opacity-60" />
+                    </button>
+                  </Options>
+                </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell className="h-32 text-center">
-                {pending ? `Loading...` : `No results.`}
-              </TableCell>
+              <TableCell className="h-32 text-center">No results.</TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-      <p className="mt-4 text-center text-sm">{pending ? `loading` : ``}</p>
     </DndContext>
-  );
-};
-
-const DraggableTableHeader = ({
-  header,
-}: {
-  header: Header<SelectCustomer, unknown>;
-}) => {
-  const {
-    attributes,
-    isDragging,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({
-    id: header.column.id,
-  });
-
-  const style: CSSProperties = {
-    opacity: isDragging ? 0.8 : 1,
-    position: "relative",
-    transform: CSS.Translate.toString(transform),
-    transition,
-    whiteSpace: "nowrap",
-    width: header.column.getSize(),
-    zIndex: isDragging ? 1 : 0,
-  };
-
-  return (
-    <TableHead
-      ref={setNodeRef}
-      className="relative h-10 border-0 before:absolute before:inset-y-0 before:start-0 before:w-px before:bg-border first:before:bg-transparent"
-      style={style}
-      aria-sort={
-        header.column.getIsSorted() === "asc"
-          ? "ascending"
-          : header.column.getIsSorted() === "desc"
-            ? "descending"
-            : "none"
-      }
-    >
-      <div className="flex items-center justify-start gap-0.5">
-        <Button
-          size="icon"
-          variant="ghost"
-          className="-ml-2 size-7 shadow-none cursor-grabbing"
-          {...attributes}
-          {...listeners}
-          aria-label="Drag to reorder"
-        >
-          <GripVertical
-            className="opacity-20"
-            size={12}
-            strokeWidth={2}
-            aria-hidden="true"
-          />
-        </Button>
-        <span className="grow truncate">
-          {header.isPlaceholder
-            ? null
-            : flexRender(header.column.columnDef.header, header.getContext())}
-        </span>
-        <Button
-          size="icon"
-          variant="ghost"
-          className="group -mr-1 size-7 shadow-none"
-          onClick={header.column.getToggleSortingHandler()}
-          onKeyDown={(e) => {
-            // Enhanced keyboard handling for sorting
-            if (
-              header.column.getCanSort() &&
-              (e.key === "Enter" || e.key === " ")
-            ) {
-              e.preventDefault();
-              header.column.getToggleSortingHandler()?.(e);
-            }
-          }}
-        >
-          {{
-            asc: (
-              <ChevronUp
-                className="shrink-0 opacity-60"
-                size={16}
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-            ),
-            desc: (
-              <ChevronDown
-                className="shrink-0 opacity-60"
-                size={16}
-                strokeWidth={2}
-                aria-hidden="true"
-              />
-            ),
-          }[header.column.getIsSorted() as string] ?? (
-            <ChevronUp
-              className="shrink-0 opacity-0 group-hover:opacity-60"
-              size={16}
-              strokeWidth={2}
-              aria-hidden="true"
-            />
-          )}
-        </Button>
-      </div>
-    </TableHead>
-  );
-};
-
-const DragAlongCell = ({ cell }: { cell: Cell<SelectCustomer, unknown> }) => {
-  const { isDragging, setNodeRef, transform, transition } = useSortable({
-    id: cell.column.id,
-  });
-
-  const style: CSSProperties = {
-    opacity: isDragging ? 0.8 : 1,
-    position: "relative",
-    transform: CSS.Translate.toString(transform),
-    transition,
-    width: cell.column.getSize(),
-    zIndex: isDragging ? 1 : 0,
-  };
-
-  return (
-    <TableCell ref={setNodeRef} className="truncate" style={style}>
-      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-    </TableCell>
   );
 };

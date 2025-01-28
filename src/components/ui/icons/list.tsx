@@ -252,6 +252,31 @@ export function ListSquare(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+function MoreHori(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 512 512"
+      {...props}
+    >
+      <path
+        d="M255.8 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"
+        fill="currentColor"
+      ></path>
+      <path
+        d="M102 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"
+        fill="currentColor"
+      ></path>
+      <path
+        d="M410 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"
+        fill="currentColor"
+      ></path>
+    </svg>
+  );
+}
+
 function PlusCircle(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -295,6 +320,26 @@ function Settings(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+function Sparkle(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+        d="M3 12c6.268 0 9-2.637 9-9c0 6.363 2.713 9 9 9c-6.287 0-9 2.713-9 9c0-6.287-2.732-9-9-9Z"
+      ></path>
+    </svg>
+  );
+}
 function Squircle(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -333,6 +378,22 @@ function Tesla(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+function Trash(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6zm3.17-6.41a.996.996 0 1 1 1.41-1.41L12 12.59l1.41-1.41a.996.996 0 1 1 1.41 1.41L13.41 14l1.41 1.41a.996.996 0 1 1-1.41 1.41L12 15.41l-1.41 1.41a.996.996 0 1 1-1.41-1.41L10.59 14zM18 4h-2.5l-.71-.71c-.18-.18-.44-.29-.7-.29H9.91c-.26 0-.52.11-.7.29L8.5 4H6c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1"
+      ></path>
+    </svg>
+  );
+}
 function UsersIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -354,7 +415,7 @@ function UsersIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function UsersIcon2(props: SVGProps<SVGSVGElement>) {
+function UsersIcon2(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -372,6 +433,46 @@ export function UsersIcon2(props: SVGProps<SVGSVGElement>) {
       >
         <circle cx="12" cy="8.196" r="4.446"></circle>
         <path d="M19.608 20.25a7.608 7.608 0 0 0-15.216 0"></path>
+      </g>
+    </svg>
+  );
+}
+
+function XMark(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="1em"
+      height="1em"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeDasharray="24"
+        strokeDashoffset="24"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      >
+        <path d="M5 5l14 14">
+          <animate
+            fill="freeze"
+            attributeName="stroke-dashoffset"
+            dur="0.4s"
+            values="24;0"
+          ></animate>
+        </path>
+        <path d="M19 5l-14 14">
+          <animate
+            fill="freeze"
+            attributeName="stroke-dashoffset"
+            begin="0.4s"
+            dur="0.4s"
+            values="24;0"
+          ></animate>
+        </path>
       </g>
     </svg>
   );
@@ -405,11 +506,15 @@ export const icons = {
   DollarCircle,
   Dashbox,
   ListSquare,
+  MoreHori,
   PlusCircle,
   Settings,
+  Sparkle,
   Squircle,
   Tesla,
+  Trash,
   UsersIcon,
   UsersIcon2,
   XLogomark,
+  XMark,
 };

@@ -6,12 +6,12 @@ const excludeProp = <T extends object>(o: T, ...keys: string[]) => {
 };
 
 export const CustomerSchema = v.object({
-  customer_id: v.string(),
+  customer_id: v.optional(v.string()),
   discount_id: v.optional(v.string()),
   promo_id: v.optional(v.string()),
   tier_level: v.optional(v.string()),
-  is_active: v.optional(v.string()),
-  is_verified: v.optional(v.string()),
+  is_active: v.optional(v.boolean()),
+  is_verified: v.optional(v.boolean()),
   username: v.optional(v.string()),
   fullname: v.optional(v.string()),
   firstname: v.optional(v.string()),
@@ -22,7 +22,7 @@ export const CustomerSchema = v.object({
   phone_number: v.optional(v.string()),
   photo_url: v.optional(v.string()),
   metadata: v.optional(v.record(v.string(), v.any())),
-  updated_at: v.float64(),
+  updated_at: v.optional(v.float64()),
 });
 
 export type SelectCustomer = Infer<typeof CustomerSchema>;
@@ -31,6 +31,9 @@ export const InsertCustomerSchema = excludeProp(
   CustomerSchema,
   "updated_at",
   "customer_id",
-) as VObject<SelectCustomer, Record<string, GenericValidator>>;
+) as VObject<
+  Omit<SelectCustomer, "updated_at" | "customer_id">,
+  Record<keyof SelectCustomer, GenericValidator>
+>;
 
 export type InsertCustomer = Infer<typeof InsertCustomerSchema>;

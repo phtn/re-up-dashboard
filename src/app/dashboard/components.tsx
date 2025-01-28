@@ -8,11 +8,11 @@ import {
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Icon } from "@/components/ui/icons";
 import type { ReactNode } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { NavUser } from "@/components/app/nav-user";
 import { cn } from "@/lib/utils";
+import { Icon } from "@/components/ui/icons";
 
 export const Header = ({ children }: { children?: ReactNode }) => {
   const pathname = usePathname();
@@ -41,11 +41,10 @@ export const Header = ({ children }: { children?: ReactNode }) => {
         ) : (
           <Button
             size={"sm"}
-            variant={"outline"}
-            className="bg-gray-900 text-white active:scale-95 transition-all duration-300"
+            variant={"ghost"}
+            className="bg-gray-200 dark:bg-gray-500/20 active:scale-95 transition-all duration-300"
           >
-            <Icon name="PlusCircle" />
-            Simulate Sale
+            Sign in
           </Button>
         )}
       </div>
@@ -53,16 +52,27 @@ export const Header = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-export const ActionButton = () => {
+interface ActionProps {
+  fn: VoidFunction;
+  label?: string;
+}
+export const ActionButton = ({ fn }: ActionProps) => {
   return (
     <button
+      onClick={fn}
       className={cn(
-        "size-12 flex items-center justify-center fixed right-8 bottom-8 z-50 rounded-full",
+        "size-12 flex items-center justify-center rounded-full",
         "text-sm bg-amber-300 cursor-pointer text-gray-800 font-semibold",
         "active:scale-95 transition-all duration-300",
       )}
     >
-      ƒ(x)
+      <Icon name="Sparkle" className="size-5" />
     </button>
   );
 };
+
+export const Counter = (props: { count: number | undefined }) => (
+  <div className="size-8 bg-gray-700 flex items-center rounded-full text-sm p-2 justify-center text-white">
+    {props.count}
+  </div>
+);
