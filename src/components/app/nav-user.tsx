@@ -69,15 +69,15 @@ export function NavUser() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button size={"icon"} className="bg-slate-200 dark:bg-transparent">
-          <Icon name="Settings" className="text-foreground" />
+          <Icon name="Squircle" className="text-amber-300" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg text-gray-950 border border-gray-400 dark:border-gray-300 dark:bg-gray-300 bg-gray-300"
-        side={isMobile ? "left" : "right"}
+        side={isMobile ? "top" : "right"}
         align="end"
-        sideOffset={10}
-        alignOffset={0}
+        sideOffset={isMobile ? 6 : 10}
+        alignOffset={isMobile ? 2 : 0}
       >
         <DropdownMenuLabel className="p-0 border-b border-gray-500 font-normal">
           <div className="flex items-center gap-2 p-3 bg-steel/20 text-left text-sm">

@@ -18,7 +18,7 @@ export const Content = () => {
   }, [cx]);
 
   return (
-    <main className="w-full h-[calc(90vh)] overflow-y-scroll">
+    <main className="w-full scroll-smooth h-[calc(90vh)] overflow-y-scroll">
       <div className="px-4">
         <div className="h-full rounded-lg overflow-hidden border border-gray-400/60 w-full md:min-h-min">
           <TableViewer />

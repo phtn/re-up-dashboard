@@ -36,8 +36,8 @@ export const Content = ({ children }: ContentProps) => {
           </div>
         </div>
 
-        <div className="px-4">
-          <div className="h-fit rounded-lg overflow-hidden border border-gray-400/40 w-full md:min-h-min">
+        <div className="md:px-4">
+          <div className="h-fit md:rounded-lg overflow-hidden border border-gray-400/40 w-full md:min-h-min">
             <TableViewer />
           </div>
 

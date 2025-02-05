@@ -123,24 +123,6 @@ const data: SidebarData = {
       href: "customers",
       icon: "UsersIcon2",
     },
-    {
-      id: "promos_1",
-      title: "Sales & Marketing",
-      href: "customers",
-      icon: "ArrowUpDown",
-    },
-    {
-      id: "settings_2",
-      title: "Travel",
-      href: "customers",
-      icon: "Settings",
-    },
-    {
-      id: "team_3",
-      title: "Travel",
-      href: "customers",
-      icon: "Dashbox",
-    },
   ],
 };
 
@@ -163,7 +145,7 @@ export const NewSidebar = () => (
         delay={0.72}
       />
     </TooltipProvider>
-    <div className="flex h-full items-end">
+    <div className="flex absolute bottom-8 h-fit items-end ">
       <NavUser />
     </div>
   </div>

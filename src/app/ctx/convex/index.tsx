@@ -4,6 +4,7 @@ import { env } from "@/env";
 import { api } from "@/vx/_generated/api";
 import { Id } from "@/vx/_generated/dataModel";
 import { type InsertCustomer, SelectCustomer } from "@/vx/customers/d";
+import { InsertItem, SelectItem } from "@/vx/items/d";
 import { type InsertSale, SelectSale } from "@/vx/sales/d";
 import {
   useMutation,
@@ -35,6 +36,16 @@ interface ConvexCtxValues {
       byId: (id: string) => Promise<SelectSale | null>;
     };
     delete: (id: Id<"sales">) => Promise<null>;
+  };
+  items: {
+    create: (
+      args: InsertItem,
+    ) => Promise<(string & { __tableName: "items" }) | null>;
+    get: {
+      all: () => SelectItem[] | undefined;
+      byId: (id: string) => Promise<SelectItem | null>;
+    };
+    delete: (id: Id<"items">) => Promise<null>;
   };
 }
 export const ConvexCtx = createContext<ConvexCtxValues | null>(null);
@@ -77,7 +88,25 @@ const CtxProvider = ({ children }: { children: ReactNode }) => {
     [createSale, deleteSaleById, getSaleById, getAllSales],
   );
 
-  return <ConvexCtx value={{ sales, customers }}>{children}</ConvexCtx>;
+  // ITEMS
+  const createItem = useMutation(api.items.create.default);
+  const deleteItemById = useMutation(api.items.delete.byId);
+  const getAllItems = useQuery(api.items.get.all);
+  const getItemById = useMutation(api.items.get.byId);
+
+  const items = useMemo(
+    () => ({
+      create: async (args: InsertItem) => await createItem(args),
+      get: {
+        all: () => getAllItems,
+        byId: async (item_id: string) => await getItemById({ item_id }),
+      },
+      delete: async (id: Id<"items">) => await deleteItemById({ id }),
+    }),
+    [createItem, deleteItemById, getItemById, getAllItems],
+  );
+
+  return <ConvexCtx value={{ sales, customers, items }}>{children}</ConvexCtx>;
 };
 
 export const ConvexCtxProvider = ({ children }: { children: ReactNode }) => (

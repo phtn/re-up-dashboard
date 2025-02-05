@@ -12,9 +12,11 @@ export default defineSchema({
     })
     .index("by_customer_id", ["customer_id"]),
   sales: defineTable(SaleSchema).index("by_sale_id", ["sale_id"]),
-  items: defineTable(ItemSchema).searchIndex("by_item_id", {
-    searchField: "item_id",
-  }),
+  items: defineTable(ItemSchema)
+    .searchIndex("by_item", {
+      searchField: "item_id",
+    })
+    .index("by_item_id", ["item_id"]),
   commanders: defineTable(CommanderSchema)
     .searchIndex("by_email", {
       searchField: "email",

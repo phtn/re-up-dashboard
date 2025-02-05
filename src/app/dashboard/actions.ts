@@ -11,10 +11,10 @@ const pexels = createClient(env.PEXELS_API);
 
 export const getPexels = async (params: PaginationParams & QueryData) => {
   const px = await pexels.photos.search({
-    query: params.query ?? "colors",
-    per_page: params.per_page ?? 15,
+    query: params.query ?? "diamonds",
+    per_page: params.per_page ?? 40,
     orientation: "square",
-    locale: params.locale ?? "ja-JP",
+    locale: params.locale ?? "en-US",
   });
 
   return px;
