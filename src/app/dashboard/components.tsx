@@ -8,16 +8,19 @@ import {
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import type { ReactNode } from "react";
+import { use, type ReactNode } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { NavUser } from "@/components/app/nav-user";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/icons";
+import { AuthCtx } from "../ctx/auth";
+import Image from "next/image";
 
 export const Header = ({ children }: { children?: ReactNode }) => {
   const pathname = usePathname();
   const nav = pathname.split("/")[2];
   const isMobile = useIsMobile();
+  const { user } = use(AuthCtx)!;
   return (
     <header className="flex h-16 shrink-0 items-center py-1.5 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       <div className="flex w-full items-end justify-between md:px-4 px-2">
@@ -38,6 +41,16 @@ export const Header = ({ children }: { children?: ReactNode }) => {
         </section>
         {isMobile ? (
           <NavUser />
+        ) : user ? (
+          <Image
+            alt="profile-pic"
+            src={user.photoURL!}
+            width={24}
+            height={24}
+            className="aspect-auto h-6 w-auto"
+            unoptimized
+            priority
+          />
         ) : (
           <Button
             size={"sm"}
