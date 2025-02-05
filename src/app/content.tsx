@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export const Content = () => {
   return (
-    <div className="h-screen w-full">
+    <div className="h-screen w-full bg-background">
       <Navbar />
       <Body />
     </div>
@@ -54,7 +54,7 @@ const Navbar = () => {
 };
 
 const Body = () => (
-  <main className="w-full h-full bg-[#fafafa] dark:invert md:p-4 py-4 px-2">
+  <main className="w-full h-full bg-[#fafafa] dark:black md:p-4 py-4 px-2">
     {/* <section className="h-10 flex gap-2 text-gray-950 items-start w-full">
       <Icon name="Apps" />
       <h1 className="font-bold text-xs">Apps</h1>
@@ -93,9 +93,9 @@ const CardItem = (ground: Ground) => (
         "cursor-pointer rounded-sm relative drop-shadow-md",
       )}
     >
-      <div className="flex items-center gap-1 px-3">
+      <div className="flex items-center gap-2 px-3">
         <Icon name="Dashbox" className="text-gray-800 z-1" />
-        <p className="text-[14px] z-1 relative dark:text-gray-900 capitalize">
+        <p className="text-sm z-1 py-1 relative dark:text-gray-900 capitalize">
           {ground.title}
         </p>
       </div>

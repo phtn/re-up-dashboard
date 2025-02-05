@@ -5,7 +5,7 @@ import {
   BreadcrumbList,
 } from "@/components/ui/breadcrumb";
 import type { ReactNode } from "react";
-import { BChart, CardStat, MetricStat } from "@/components/stats/line";
+import { BChart, MetricStat } from "@/components/stats/line";
 import { NewSidebar } from "@/components/app/sidebar";
 import "./style.css";
 
@@ -31,7 +31,6 @@ export const Content = ({ children }: ContentProps) => {
         <main className="flex">
           <section className="flex flex-1 flex-col gap-4 pt-0">
             <div className="grid auto-rows-min h-fit gap-4 md:grid-cols-4 px-4">
-              <CardStat />
               <BChart />
               <div className="dark:bg-white col-span-2 rounded-xl bg-muted/50">
                 <MetricStat />

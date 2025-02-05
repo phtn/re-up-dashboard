@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/chart";
 import { Button } from "../ui/button";
 import { Icon } from "../ui/icons";
+import { SelectSale } from "@/vx/sales/d";
+import { useMemo } from "react";
+import NumberFlow from "@number-flow/react";
 
 const data = [
   {
@@ -53,7 +56,7 @@ const chartConfig = {
     color: "var(--primary)",
   },
   subscription: {
-    label: "Subscriptions",
+    label: "Page Views",
     color: "var(--primary)",
   },
 } satisfies ChartConfig;
@@ -88,7 +91,17 @@ const CTrend = (props: { trend: string }) => (
   </p>
 );
 
-export function CardStat() {
+interface CardStatProps {
+  sx: SelectSale[] | undefined;
+}
+export function CardStat({ sx }: CardStatProps) {
+  const total_sales = useMemo(
+    () =>
+      sx?.reduce((acc, cur) => {
+        return acc + Number(cur?.amount);
+      }, 0),
+    [sx],
+  );
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -97,7 +110,18 @@ export function CardStat() {
       </CardHeader>
 
       <CardContent className="pb-0 space-y-4">
-        <CValue value={"$15,231.89"} />
+        <div className="text-3xl font-geist-sans tracking-tight font-extrabold">
+          <NumberFlow
+            value={total_sales ?? 0}
+            format={{
+              notation: "standard",
+              style: "currency",
+              currency: "USD",
+              currencySign: "standard",
+              localeMatcher: "best fit",
+            }}
+          />
+        </div>
         <ChartContainer
           config={chartConfig}
           className="place-self-end h-[80px] md:h-[60px] w-full"
@@ -130,7 +154,7 @@ export function CardStat() {
 export const BChart = () => (
   <Card>
     <CardHeader className="flex flex-row items-center justify-between">
-      <CTitle title="subscriptions" />
+      <CTitle title="Page Views" />
       <CTrend trend="+180.1% from last month" />
     </CardHeader>
     <CardContent className="space-y-4 pb-0">

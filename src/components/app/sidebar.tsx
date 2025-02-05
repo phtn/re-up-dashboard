@@ -88,7 +88,7 @@ const data: SidebarData = {
     {
       id: "sales_0",
       title: "Sales",
-      icon: "DollarCircle",
+      icon: "MoneyIn",
     },
     {
       id: "inventory_0",
@@ -104,8 +104,8 @@ const data: SidebarData = {
     },
     {
       id: "fulfillment_0",
-      title: "Fulfillment",
-      href: "fulfillment",
+      title: "Packaging",
+      href: "packaging",
       icon: "Box",
     },
     {

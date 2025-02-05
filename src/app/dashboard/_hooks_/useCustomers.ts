@@ -61,6 +61,7 @@ export const useCustomers = () => {
       phone_number: generateRandomPhoneNumbers(),
       photo_url: photoPicker(),
       discount_id: String(discountPicker()),
+      is_active: Math.floor(Math.random() * 10) > 0.25,
     };
 
     const id = await customers.create(args);

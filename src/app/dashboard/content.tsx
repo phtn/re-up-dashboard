@@ -29,7 +29,7 @@ export const Content = ({ children }: ContentProps) => {
     <main className="relative flex h-[calc(90vh)] overflow-y-scroll">
       <section className="flex w-full flex-1 flex-col gap-4 pt-0">
         <div className="grid h-fit md:gap-4 gap-y-2 grid-cols-1 w-full md:grid-cols-4 px-2 md:px-4">
-          <CardStat />
+          <CardStat sx={sx} />
           <BChart />
           <div className="col-span-1 md:col-span-2 rounded-xl bg-muted/50">
             <MetricStat />

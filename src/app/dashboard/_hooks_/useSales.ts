@@ -26,17 +26,22 @@ import {
   useTransition,
 } from "react";
 import { getPexels } from "../actions";
+import { Photo } from "pexels";
 
 export const useSales = () => {
   const [sx, setsx] = useState<(SelectSale & ConvexInternal)[]>();
   const [, setsxId] = useState<Id<"sales"> | null>(null);
   const [cx, setcx] = useState<(SelectCustomer & ConvexInternal)[]>();
   const [photo_url, setPhoto] = useState<string>();
+  const [photo_urls, setPhotoURLs] = useState<Photo[] | undefined>();
 
   const getPhoto = useCallback(async () => {
-    const pexels = await getPexels();
+    const pexels = await getPexels({
+      query: "gems",
+      locale: "fr-FR",
+    });
     if ("error" in pexels) return;
-    return pexels.photos[0].src.tiny;
+    return pexels.photos;
   }, []);
 
   const [pending, fn] = useTransition();
@@ -76,6 +81,11 @@ export const useSales = () => {
     const fullname = namePicker();
     const [, lastname] = splitString(fullname);
 
+    const selected_photo =
+      photo_urls?.[Math.floor(Math.random() * (photo_urls?.length ?? 0))].src
+        .original ?? "";
+    setPhoto(selected_photo);
+
     const args: InsertSale = {
       category: lastname,
       subcategory: unamePicker(),
@@ -83,7 +93,7 @@ export const useSales = () => {
       item_name: parfumPicker(),
       item_brand: moonPicker(),
       amount: generateRandomAmount(),
-      photo_url: photo_url,
+      photo_url: photo_url ?? selected_photo,
       customer_id: cxPicker()?.customer_id ?? "",
       customer_name: cxPicker()?.fullname ?? "",
       customer_email: cxPicker()?.email ?? "",
@@ -94,7 +104,7 @@ export const useSales = () => {
 
     onSuccess(`1 item sold!`);
     return id;
-  }, [sales, cxPicker, photo_url]);
+  }, [sales, cxPicker, photo_urls, photo_url]);
 
   const addSx = useCallback(() => {
     setFn(fn, addOne, setsxId);
@@ -108,7 +118,7 @@ export const useSales = () => {
   );
 
   const getPhotoURL = useCallback(() => {
-    setFn(fn, getPhoto, setPhoto);
+    setFn(fn, getPhoto, setPhotoURLs);
   }, [getPhoto]);
 
   useEffect(() => {

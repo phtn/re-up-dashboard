@@ -144,9 +144,9 @@ export const SalesTable = ({ columns, data }: DataTableProps<SelectSale>) => {
                   <DraggableTableHeader key={header.id} header={header} />
                 ))}
               </SortableContext>
-              <div className="flex items-center justify-end pe-4 h-10">
+              <TableCell className="flex items-center justify-end pe-4 h-10">
                 options
-              </div>
+              </TableCell>
             </TableRow>
           ))}
         </TableHeader>
@@ -167,13 +167,13 @@ export const SalesTable = ({ columns, data }: DataTableProps<SelectSale>) => {
                     <DragAlongCell key={cell.id} cell={cell} />
                   </SortableContext>
                 ))}
-                <div className="flex items-center h-16 pe-4 justify-end">
+                <TableCell className="flex items-center h-16 pe-4 justify-end">
                   <Options id={row.getValue("_id")} table={"sales"}>
                     <button className="cursor-pointer w-fit hover:bg-gray-300/40 rounded-full">
                       <Icon name="MoreHori" className="size-5 opacity-60" />
                     </button>
                   </Options>
-                </div>
+                </TableCell>
               </TableRow>
             ))
           ) : (

@@ -1,17 +1,20 @@
 "use server";
 
 import { env } from "@/env";
-import { createClient } from "pexels";
+import { createClient, PaginationParams } from "pexels";
 
+export interface QueryData {
+  query: string;
+  locale: string;
+}
 const pexels = createClient(env.PEXELS_API);
 
-export const getPexels = async () => {
+export const getPexels = async (params: PaginationParams & QueryData) => {
   const px = await pexels.photos.search({
-    query: "fragrance",
-    per_page: 1,
-    size: "tiny",
+    query: params.query ?? "colors",
+    per_page: params.per_page ?? 15,
     orientation: "square",
-    locale: "ja-JP",
+    locale: params.locale ?? "ja-JP",
   });
 
   return px;
