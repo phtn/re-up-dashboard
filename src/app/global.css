@@ -3,7 +3,7 @@
 .pentagon {
   width: 180px;
   aspect-ratio: 4;
-  --o: calc(50% * tan(-50deg));
+  --o: calc(50% * tan(-70deg));
   clip-path: polygon(
     var(--o) 5%,
     5% var(--o),

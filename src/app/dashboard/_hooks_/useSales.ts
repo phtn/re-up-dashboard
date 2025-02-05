@@ -37,7 +37,7 @@ export const useSales = () => {
 
   const getPhoto = useCallback(async () => {
     const pexels = await getPexels({
-      query: "gems",
+      query: "diamonds",
       locale: "fr-FR",
     });
     if ("error" in pexels) return;
